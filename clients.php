@@ -1,5 +1,6 @@
 <html>
 <body>
+	<h1>Clients</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";	
@@ -95,33 +96,63 @@
 
 	$result=$sql->fetchAll();
 
-	echo("<table border=\"1\">");
-	echo("<tr><td>VAT</td><td>Name</td><td>Birth Date</td><td>Street</td><td>City</td><td>ZIP</td><td>Gender</td><td>Age</td></tr>");
-	foreach($result as $row)
-	{
-		echo("<tr><td>");
-		echo($row['VAT']);
-		echo("</td><td>");
-		echo($row['name']);
-		echo("</td><td>");
-		echo($row['birth_date']);
-		echo("</td><td>");
-		echo($row['street']);
-		echo("</td><td>");
-		echo($row['city']);
-		echo("</td><td>");
-		echo($row['zip']);
-		echo("</td><td>");
-		echo($row['gender']);
-		echo("</td><td>");
-		echo($row['age']);
-		echo("</td></tr>");
-		echo($row['age']);
-		echo("</td></tr>");
+	if($result == 0) {
+		$info = $sqls->errorInfo();
+		echo("<p>Error: {$info[2]}</p>");
+		exit();
 	}
-	echo("</table>");
 
-
+	// Checks if there are clients with the given parameters
+	$nrows = $sql->rowCount();
+	if ($nrows == 0) {
+		?>
+		<p>There is no client with this VAT.</p>
+		<form action='insertclient.php' method='post'>
+		<h3>Input the new client information</h3>
+		<p>VAT: <input type='text' name='vat'/></p>
+		<p>Name: <input type='text' name='name'/></p>
+		<p>Birth Date: <input type='date' name='birth_date'/></p>
+		<p>Street: <input type='text' name='street'/></p>
+		<p>City: <input type='text' name='city'/></p>
+		<p>ZIP: <input type='text' name='zip'/></p>
+		<p>Gender: <br>
+			<input type="radio" name="gender" value="male" checked> Male<br>
+			<input type="radio" name="gender" value="female"> Female<br>
+			<input type="radio" name="gender" value="other"> Other
+		<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}">
+		<?php
+	}
+	else {
+		echo("<table border=\"1\">");
+		echo("<tr><td>VAT</td><td>Name</td><td>Birth Date</td><td>Street</td><td>City</td><td>ZIP</td><td>Gender</td><td>Age</td></tr>");
+		foreach($result as $row)
+		{
+			echo("<tr><td>");
+			echo($row['VAT']);
+			echo("</td><td>");
+			echo($row['name']);
+			echo("</td><td>");
+			echo($row['birth_date']);
+			echo("</td><td>");
+			echo($row['street']);
+			echo("</td><td>");
+			echo($row['city']);
+			echo("</td><td>");
+			echo($row['zip']);
+			echo("</td><td>");
+			echo($row['gender']);
+			echo("</td><td>");
+			echo($row['age']);
+			echo("</td></td>");
+			echo("<td><a href=\"consults.php?name=");
+			echo($row['an_name']);
+			echo("&VAT_owner=");
+			echo($row['VAT']);
+			echo("\">View client</a></td></tr>\n");
+			echo("</td></tr>");
+		}
+		echo("</table>");
+	}
 	$connection = null;
 ?>
 
