@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Consults</title>
+	<title>Consults and Appointments</title>
 </head>
 <body>
+	<h1>Consults and Appointments</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";	
@@ -22,34 +23,24 @@
 		exit();
 	}
 
-	$query = "SELECT * FROM client WHERE "
-	$queryVariables = array();
-
+	// Show the received client
+	echo("<p><b>Client - </b>");
+	// Gets the VAT of the selected client
 	if(isset($_REQUEST['VAT_client'])) {
 		$VAT_client = $_REQUEST['VAT_client'];
-		$query = $query . "VAT = :VAT_client "
-		$queryVariables[':VAT_client'] => $VAT_client
+		echo("VAT: ");
+		echo($VAT_client);
 	}
-	if(isset($_REQUEST['client_name'])) {
-		$client_name = $_REQUEST['client_name'];
-		$query = $query . "name = :client_name "
-		$queryVariables[':client_name'] => $client_name
+	// Gets the VAT of the selected client
+	if(isset($_REQUEST['Client_Name'])) {
+		$Client_Name = $_REQUEST['Client_Name'];
+		echo(" Name: ");
+		echo($Client_Name);
 	}
-	if(isset($_REQUEST['client_address_street'])) {
-		$client_address_street = $_REQUEST['client_address_street'];
-		$query = $query . "street = :client_address_street "
-		$queryVariables[':client_address_street'] => $client_address_street
-	}
-	if(isset($_REQUEST['client_address_city']) {
-		$client_address_city = $_REQUEST['client_address_city'];
-		$query = $query . "city = :client_address_city "
-		$queryVariables[':client_address_city'] => $client_address_city
-	}
-	if(isset($_REQUEST['client_address_zip'])) {
-		$client_address_zip = $_REQUEST['client_address_zip'];
-		$query = $query . "zip = :client_address_zip "
-		$queryVariables[':client_address_zip'] => $client_address_zip
-	}
+	echo("</p>");
+
+	/*$query = "SELECT * FROM client WHERE "
+	$queryVariables = array(':VAT_client' => $VAT_client);
 
 	$query = $query . ";"
 	echo $query
@@ -59,8 +50,9 @@
 		$info = $connection->errorInfo();
 		echo("<p>Error: {$info[2]}</p>");
 		exit();
-	}
+	}*/
 
-
+	$connection = null;
+?>
 </body>
 </html>

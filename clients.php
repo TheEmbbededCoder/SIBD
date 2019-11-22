@@ -1,4 +1,7 @@
 <html>
+<head>
+	<title>Clients</title>
+</head>
 <body>
 	<h1>Clients</h1>
 	<?php
@@ -20,7 +23,7 @@
 		exit();
 	}
 
-	$query = "SELECT * FROM client WHERE ";
+	$query = "SELECT * FROM client natural join phone_number_client WHERE ";
 	$queryVariables = array();
 
 	$first = True;
@@ -102,35 +105,24 @@
 		exit();
 	}
 
+	echo("<h3>Found Clients</h3>");
+
 	// Checks if there are clients with the given parameters
 	$nrows = $sql->rowCount();
 	if ($nrows == 0) {
-		?>
-		<p>There is no client with this VAT.</p>
-		<form action='insertclient.php' method='post'>
-		<h3>Input the new client information</h3>
-		<p>VAT: <input type='text' name='vat'/></p>
-		<p>Name: <input type='text' name='name'/></p>
-		<p>Birth Date: <input type='date' name='birth_date'/></p>
-		<p>Street: <input type='text' name='street'/></p>
-		<p>City: <input type='text' name='city'/></p>
-		<p>ZIP: <input type='text' name='zip'/></p>
-		<p>Gender: <br>
-			<input type="radio" name="gender" value="male" checked> Male<br>
-			<input type="radio" name="gender" value="female"> Female<br>
-			<input type="radio" name="gender" value="other"> Other
-		<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}">
-		<?php
+		echo("<p>There is no client for he given input.</p>");
 	}
 	else {
 		echo("<table border=\"1\">");
-		echo("<tr><td>VAT</td><td>Name</td><td>Birth Date</td><td>Street</td><td>City</td><td>ZIP</td><td>Gender</td><td>Age</td></tr>");
+		echo("<tr><td>VAT</td><td>Name</td><td>Phone Number</td><td>Birth Date</td><td>Street</td><td>City</td><td>ZIP</td><td>Gender</td><td>Age</td></tr>");
 		foreach($result as $row)
 		{
 			echo("<tr><td>");
 			echo($row['VAT']);
 			echo("</td><td>");
 			echo($row['name']);
+			echo("</td><td>");
+			echo($row['phone']);
 			echo("</td><td>");
 			echo($row['birth_date']);
 			echo("</td><td>");
@@ -144,15 +136,36 @@
 			echo("</td><td>");
 			echo($row['age']);
 			echo("</td></td>");
-			echo("<td><a href=\"consults.php?name=");
-			echo($row['an_name']);
-			echo("&VAT_owner=");
+			echo("<td><a href=\"consults.php/?VAT_client=");
 			echo($row['VAT']);
+        	echo("&Client_Name=");
+        	echo($row['name']);
 			echo("\">View client</a></td></tr>\n");
 			echo("</td></tr>");
 		}
 		echo("</table>");
 	}
+
+	// Allows for the addition of new clients
+	?>
+	<form action='insertclient.php' method='post'>
+	<h3>New client</h3>
+	<h4>Input the new client information</h4>
+	<p>VAT: <input type='text' name='vat' required /></p>
+	<p>Name: <input type='text' name='name'/></p>
+	<p>Birth Date: <input type='date' name='birth_date'/></p>
+	<p>Street: <input type='text' name='street'/></p>
+	<p>City: <input type='text' name='city'/></p>
+	<p>ZIP: <input type='text' name='zip'/></p>
+	<p>Gender: <select name="gender2">
+		<option value="gender2">Female</option>
+		<option value="gender2">Male</option>
+		<option value="gender2">Other</option>
+	</select> </p>
+	<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}">
+	<p><input type="submit" value="Submit"/></p>
+	<?php
+
 	$connection = null;
 ?>
 
