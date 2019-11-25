@@ -23,9 +23,29 @@
 		$name = $_REQUEST['name'];
 
 		$birth_date = $_REQUEST['birth_date'];
-		$time=strtotime($birth_date);
-		$year=date("Y",$time);
-		$age = 2020 - $year;
+        $time=strtotime($birth_date);
+        $year=date("Y",$time);
+        $month=date("m",$time);
+        $day=date("d",$time);
+
+
+        $dateActual = date("Y-m-d");
+        $time=strtotime($dateActual);
+        $yearActual = date("Y",$time);
+        $monthActual=date("m",$time);
+        $dayActual=date("d",$time);
+
+        if(mothActual >= month){
+            if(dayActual >= day){
+                $age = $yearActual - $year;
+            }
+            else{
+                $age = $yearActual - $year - 1;
+            }
+        }
+        else{
+            $age = $yearActual - $year - 1;
+        }
 
 		$street = $_REQUEST['street'];
 
