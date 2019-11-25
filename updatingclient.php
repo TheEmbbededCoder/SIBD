@@ -46,7 +46,7 @@
 
 		$query6 = "UPDATE phone_number_client SET phone = '$phone' WHERE VAT ='$VAT' ";
 
-		echo("<p>Will be updated the client.</p>");
+		echo("<p>The client will be updated.</p>");
 
 		$nrows = $connection->exec($query);
 		$nrows1 = $connection->exec($query1);

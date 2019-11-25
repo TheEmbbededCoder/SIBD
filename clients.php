@@ -36,8 +36,7 @@
 		else {
 			$query = $query . " AND "; 
 		}
-		$query = $query . "VAT = :VAT_client "; 
-		$queryVariables[':VAT_client'] = $VAT_client;
+		$query = $query . "VAT = '$VAT_client' "; 
 	}
 	if(!empty($_REQUEST['client_name'])) {
 		$client_name = $_REQUEST['client_name'];
@@ -47,8 +46,7 @@
 		else {
 			$query = $query . " AND "; 
 		}
-		$query = $query . "name = :client_name ";
-		$queryVariables[':client_name'] = $client_name;
+		$query = $query . "name LIKE '%$client_name%' ";
 	}
 	if(!empty($_REQUEST['client_address_street'])) {
 		$client_address_street = $_REQUEST['client_address_street'];
@@ -58,8 +56,7 @@
 		else {
 			$query = $query . " AND "; 
 		}
-		$query = $query . "street = :client_address_street ";
-		$queryVariables[':client_address_street'] = $client_address_street;
+		$query = $query . "street LIKE '%$client_address_street%' ";
 	}
 	if(!empty($_REQUEST['client_address_city'])) {
 		$client_address_city = $_REQUEST['client_address_city'];
@@ -69,8 +66,7 @@
 		else {
 			$query = $query . " AND "; 
 		}
-		$query = $query . "city = :client_address_city ";
-		$queryVariables[':client_address_city'] = $client_address_city;
+		$query = $query . "city LIKE '%$client_address_city%' ";
 	}
 	if(!empty($_REQUEST['client_address_zip'])) {
 		$client_address_zip = $_REQUEST['client_address_zip'];
@@ -80,8 +76,7 @@
 		else {
 			$query = $query . " AND "; 
 		}
-		$query = $query . "zip = :client_address_zip ";
-		$queryVariables[':client_address_zip'] = $client_address_zip;
+		$query = $query . "zip LIKE '%$client_address_zip%' ";
 	}
 
 	$query = $query . ";";
