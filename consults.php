@@ -39,19 +39,54 @@
 	}
 	echo("</p>");
 
-	/*$query = "SELECT * FROM client WHERE "
-	$queryVariables = array(':VAT_client' => $VAT_client);
-
-	$query = $query . ";"
-	echo $query
+	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client ORDER BY date_timestamp;";
+    $queryVariables = array();
+	$queryVariables[':VAT_client'] = $VAT_client;
 
 	$sql = $connection->prepare($query);
-	if(!$sql->execute($queryVariables){
+	if(!$sql->execute($queryVariables)){
 		$info = $connection->errorInfo();
 		echo("<p>Error: {$info[2]}</p>");
 		exit();
-	}*/
+	}
 
+	$result=$sql->fetchAll();
+
+	if($result == 0) {
+        $info = $sqls->errorInfo();
+        echo("<p>Error: {$info[2]}</p>");
+        exit();
+    }
+
+    $nrows = $sql->rowCount();
+    if ($nrows == 0) {
+        echo("<p>There are no appointments for this client.</p>");
+    } 
+	else {
+		echo("<table border=\"1\">");
+		echo("<tr><td>Date</td></tr>");
+		foreach($result as $row) {
+			echo("<tr><td><a href=\"../consults.php/?VAT_client=");
+			echo($VAT_client);
+			echo("&Client_Name=");
+			echo($Client_Name);
+			echo("\">");
+			echo($row['date_timestamp']);
+			echo("</a></td></tr>");
+		}
+		echo("</table>");
+	}
+
+	?>
+	<form action="/ist425355/searchconsults.php" method="post">
+		<h1>New Appointments</h1>
+		<p>Date: <input type='date' name='date' required/></p>
+		<p>Time: <input type='time' name='time' min="09:00" max="17:00" required/></p>
+		<input type="hidden" name="VAT_client" value="<?php echo $VAT_client;?>"/>
+		<input type="hidden" name="Client_Name" value="<?php echo $Client_Name;?>"/>
+		<p><input type="submit" value="Search"/></p>
+	</form>
+	<?php
 	$connection = null;
 ?>
 </body>

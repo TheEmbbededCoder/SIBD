@@ -110,7 +110,7 @@
 	// Checks if there are clients with the given parameters
 	$nrows = $sql->rowCount();
 	if ($nrows == 0) {
-		echo("<p>There is no client for he given input.</p>");
+		echo("<p>There is no client for the given input.</p>");
 	}
 	else {
 		echo("<table border=\"1\">");
