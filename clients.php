@@ -140,7 +140,13 @@
 			echo($row['VAT']);
         	echo("&Client_Name=");
         	echo($row['name']);
-			echo("\">View client</a></td></tr>\n");
+			echo("\">View client</a></td></td>");
+			echo("</td></td>");
+			echo("<td><a href=\"updateclient.php/?VAT_client=");
+			echo($row['VAT']);
+        	echo("&Client_Name=");
+        	echo($row['name']);
+			echo("\">Update</a></td></tr>\n");
 			echo("</td></tr>");
 		}
 		echo("</table>");
@@ -152,17 +158,17 @@
 	<h3>New client</h3>
 	<h4>Input the new client information</h4>
 	<p>VAT: <input type='text' name='vat' required /></p>
-	<p>Name: <input type='text' name='name'/></p>
-	<p>Birth Date: <input type='date' name='birth_date'/></p>
-	<p>Street: <input type='text' name='street'/></p>
-	<p>City: <input type='text' name='city'/></p>
-	<p>ZIP: <input type='text' name='zip'/></p>
+	<p>Name: <input type='text' name='name' required/></p>
+	<p>Birth Date: <input type='date' name='birth_date' required/></p>
+	<p>Street: <input type='text' name='street' required/></p>
+	<p>City: <input type='text' name='city' required/></p>
+	<p>ZIP: <input type='text' name='zip' required/></p>
 	<p>Gender: <select name="gender2">
-		<option value="gender2">Female</option>
-		<option value="gender2">Male</option>
-		<option value="gender2">Other</option>
+		<option value="Female">Female</option>
+		<option value="Male">Male</option>
+		<option value="Other">Other</option>
 	</select> </p>
-	<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}">
+	<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}" required/></p>
 	<p><input type="submit" value="Submit"/></p>
 	<?php
 

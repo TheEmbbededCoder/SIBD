@@ -20,12 +20,50 @@
 		exit();
 	}
 
-	$query = "SELECT * FROM client natural join phone_number_client WHERE ";
-	$queryVariables = array();
+	$VAT = $_REQUEST['vat'];
 
+	$name = $_REQUEST['name'];
+
+	$birth_date = $_REQUEST['birth_date'];
+	$time=strtotime($birth_date);
+	$year=date("Y",$time);
+	$age = 2020 - $year;
+
+	$street = $_REQUEST['street'];
+
+	$city = $_REQUEST['city'];
+
+	$zip = $_REQUEST['zip'];
+
+	$gender = $_REQUEST['gender2'];
 	
+	$phone = $_REQUEST['phone'];
+
+
+	$query = "INSERT INTO client VALUES ('$VAT', '$name', '$birth_date', '$street', '$city', '$zip', '$gender', '$age')";
+	$query1 = "INSERT INTO phone_number_client VALUES ('$VAT', '$phone')";
+	
+	echo("<p>Will be inserted a new client.</p>");
+
+	$nrows = $connection->exec($query);
+	$nrows1 = $connection->exec($query1);
+
+	if($nrows ==1 && $nrows1 == 1){
+		echo "Success !";
+	}
+?>
+	<form action='clients.php' method='post'>
+	<p><input type="hidden" name="VAT_client"
+		value="<?=$_REQUEST['vat']?>"/></p>
+	<p><input type="hidden" name="client_name"
+			value="<?=$_REQUEST['name']?>"/></p>
+	<p><input type="submit" value="Continue"/></p>
+	
+	<?php
+
 	$connection = null;
 ?>
+
 
 </body>
 </html>
