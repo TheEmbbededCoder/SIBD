@@ -35,9 +35,13 @@
 		echo($Client_Name);
 	}
 	echo("</p>");
-	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client ORDER BY date_timestamp;";
+	date_default_timezone_set("Europe/London");
+	$currentDate = date("Y-m-d H:i:s");
+	echo("<p>The time is " . date("Y-m-d H:i:s") . "</p>");
+	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client AND date_timestamp < :currentDate ORDER BY date_timestamp;";
     $queryVariables = array();
 	$queryVariables[':VAT_client'] = $VAT_client;
+	$queryVariables[':currentDate'] = $currentDate;
 	$sql = $connection->prepare($query);
 	if(!$sql->execute($queryVariables)){
 		$info = $connection->errorInfo();
