@@ -149,6 +149,7 @@
 
 	// Allows for the addition of new clients
 	?>
+
 	<form action='insertclient.php' method='post'>
 	<h3>New client</h3>
 	<h4>Input the new client information</h4>
@@ -165,7 +166,13 @@
 	</select> </p>
 	<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}" required/></p>
 	<p><input type="submit" value="Submit"/></p>
+
 	<?php
+
+	echo("<p><a href=\"homepage.php");
+	echo("\">");
+	echo("Back to Homepage </a></p>");
+
 
 	$connection = null;
 ?>
