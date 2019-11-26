@@ -22,7 +22,20 @@
 		echo("</p>");
 		exit();
 	}
-
+	// Show the received client
+	echo("<p><b>Client - </b>");
+	// Gets the VAT of the selected client
+	if(isset($_REQUEST['VAT_client'])) {
+		$VAT_client = $_REQUEST['VAT_client'];
+		echo("VAT: ");
+		echo($VAT_client);
+	}
+	// Gets the VAT of the selected client
+	if(isset($_REQUEST['Client_Name'])) {
+		$Client_Name = $_REQUEST['Client_Name'];
+		echo(" Name: ");
+		echo($Client_Name);
+	}
 	// Show the received client
 	echo("<p><b>Doctor - </b>");
 	// Gets the VAT of the selected client
