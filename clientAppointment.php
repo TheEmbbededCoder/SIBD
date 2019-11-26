@@ -43,59 +43,53 @@
 	$currentDate = date("Y-m-d H:i:s");
 	echo("<p>The time is " . date("Y-m-d H:i:s") . "</p>");
 
-	if ($currentDate > $date_timestamp) {
-		//this is in the past
-		//search consultations
-		$query = 'SELECT * FROM consultation WHERE VAT_doctor = :VAT_doctor and date_timestamp=:date_timestamp;';
-		$queryVariables = array();
-		$queryVariables[':VAT_doctor'] = $VAT_doctor;
-		$queryVariables[':date_timestamp'] = $date_timestamp;
-		$sql = $connection->prepare($query);
-		if(!$sql->execute($queryVariables)){
-			$info = $connection->errorInfo();
-			echo("<p>Error: {$info[2]}</p>");
-			exit();
-		}
-		$result=$sql->fetchAll();
 
-		if($result == 0) {
-		    $info = $sql->errorInfo();
-		    echo("<p>Error: {$info[2]}</p>");
-		    exit();
-		}
-
-	    if ($sql->rowCount() == 0) {
-			echo("<p>Create consultation?</p>");
-			//search appointment info
-		}
-		else {
-			//display consultation info in table
-			echo("<table border=\"1\">");
-			echo("<tr><td>VAT_doctor</td><td>S</td><td>O</td><td>A</td><td>P</td></tr>");
-			foreach ($result as $row) {
-				echo("<tr><td>");
-				echo($row['VAT_doctor']);
-				echo("</td>");
-				echo("<td>");
-				echo($row['SOAP_S']);
-				echo("</td>");
-				echo("<td>");
-				echo($row['SOAP_O']);
-				echo("</td>");
-				echo("<td>");
-				echo($row['SOAP_A']);
-				echo("</td>");
-				echo("<td>");
-				echo($row['SOAP_P']);
-				echo("</td></tr>");
-			}
-				
-			echo("</table>");
-		}
-	} else {
-		//this is a future appointment
-		//query appointment
-		//display results
+	//search appointment info
+	$query = 'SELECT * FROM appointment WHERE VAT_doctor = :VAT_doctor and date_timestamp=:date_timestamp;';
+	$queryVariables = array();
+	$queryVariables[':VAT_doctor'] = $VAT_doctor;
+	$queryVariables[':date_timestamp'] = $date_timestamp;
+	$sql = $connection->prepare($query);
+	if(!$sql->execute($queryVariables)){
+		$info = $connection->errorInfo();
+		echo("<p>Error: {$info[2]}</p>");
+		exit();
 	}
+	$result=$sql->fetchAll();
+
+	if($result == 0) {
+	    $info = $sql->errorInfo();
+	    echo("<p>Error: {$info[2]}</p>");
+	    exit();
+	}
+
+    if ($sql->rowCount() == 0) {
+    	echo("<p>No appointment found.</p>");
+	}
+
+	//Display info in table
+	echo("<table border=\"1\">");
+	echo("<tr><td>Doctor VAT</td><td>Date/Time</td><td>Description</td><td>Client VAT</td></tr>");
+	foreach ($result as $row) {
+		echo("<tr><td>");
+		echo($row['VAT_doctor']);
+		echo("</td>");
+		echo("<td>");
+		echo($row['date_timestamp']);
+		echo("</td>");
+		echo("<td>");
+		echo($row['description']);
+		echo("</td>");
+		echo("<td>");
+		echo($row['VAT_client']);
+		echo("</td></tr>");
+	}
+		
+	echo("</table>");
+
+			
+		
+		
+	
 	$connection = null;
 	?>
