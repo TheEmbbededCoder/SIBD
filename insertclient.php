@@ -38,20 +38,16 @@
 	$dayActual=date("d",$time);
 
 	if($monthActual > $month){
-		echo("aqui caralho1");
 		$age = $yearActual - $year;
 	}
 	elseif($monthActual < $month){
-		echo("aqui caralho2");
 		$age = $yearActual - $year - 1;
 	}
 	elseif($monthActual == $month){
 		if($dayActual>=$day){
-			echo("aqui caralho3");
 			$age = $yearActual - $year;
 		}
 		else{
-			echo("aqui caralho4");
 			$age = $yearActual - $year - 1;
 		}
 	}
