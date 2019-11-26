@@ -152,22 +152,18 @@
 				echo("</td>");
 				echo("<td>");
 				echo($row['description']);
+				echo("</td>");
+				echo("<td>");
+				echo("<a href=\"../clientConsultation.php/?VAT_doctor=");
+				echo($VAT_doctor);
+				echo("&date_timestamp=");
+				echo($date_timestamp);
+				echo("\">");
+				echo("Edit Diagnosis</a>");
 				echo("</td></tr>");
 			}
 				
 			echo("</table>");
-
-
-
-
-
-
-			// echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
-			// echo($VAT_doctor);
-			// echo("&date_timestamp=");
-			// echo($date_timestamp);
-			// echo("\">");
-			// echo("Edit Diagnosis</a></p>");
 		}
 	}
 	
