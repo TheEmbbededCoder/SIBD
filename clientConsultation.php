@@ -46,7 +46,7 @@
 
 	//this is in the past
 	//search consultations
-	$query = 'SELECT * FROM consultation WHERE VAT_doctor = :VAT_doctor and date_timestamp=:date_timestamp;';
+	$query = 'SELECT * FROM consultation NATURAL JOIN consultation_assistant WHERE VAT_doctor = :VAT_doctor and date_timestamp=:date_timestamp;';
 	$queryVariables = array();
 	$queryVariables[':VAT_doctor'] = $VAT_doctor;
 	$queryVariables[':date_timestamp'] = $date_timestamp;
@@ -71,7 +71,7 @@
 	else {
 		//display consultation info in table
 		echo("<table border=\"1\">");
-		echo("<tr><td>VAT_doctor</td><td>S</td><td>O</td><td>A</td><td>P</td></tr>");
+		echo("<tr><td>VAT_doctor</td><td>S</td><td>O</td><td>A</td><td>P</td><td>Nurse VAT</td></tr>");
 		foreach ($result as $row) {
 			echo("<tr><td>");
 			echo($row['VAT_doctor']);
@@ -87,6 +87,8 @@
 			echo("</td>");
 			echo("<td>");
 			echo($row['SOAP_P']);
+			echo("<td>");
+			echo($row['VAT_nurse']);
 			echo("</td></tr>");
 		}
 			
