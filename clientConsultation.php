@@ -143,12 +143,7 @@
 	    if ($sql->rowCount() == 0) {
 			//No diagnosis found
 			echo("<p>No diagnoses found.</p>");
-			echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
-			echo($VAT_doctor);
-			echo("&date_timestamp=");
-			echo($date_timestamp);
-			echo("\">");
-			echo("Add Diagnosis</a></p>");
+			
 		} else{
 			//Display Diagnosis in table
 			echo("<p>Diagnoses found.</p>");
@@ -181,6 +176,13 @@
 			}
 				
 			echo("</table>");
+
+			echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+			echo($VAT_doctor);
+			echo("&date_timestamp=");
+			echo($date_timestamp);
+			echo("\">");
+			echo("Add Diagnosis</a></p>");
 		}
 	}
 	
