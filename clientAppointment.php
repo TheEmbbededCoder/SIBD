@@ -24,7 +24,7 @@
 	}
 
 	// Show the received client
-	echo("<p><b>Client - </b>");
+	echo("<p><b>Doctor - </b>");
 	// Gets the VAT of the selected client
 	if(isset($_REQUEST['VAT_doctor'])) {
 		$VAT_doctor = $_REQUEST['VAT_doctor'];
