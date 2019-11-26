@@ -2,6 +2,11 @@
 <html>
 <head>
 	<title>Appointment</title>
+	<script>
+	function goBack() {
+		window.history.back()
+	}
+	</script>
 </head>
 <body>
 	<h1>Appointment</h1>
@@ -106,3 +111,8 @@
 	
 	$connection = null;
 	?>
+
+<button onclick="goBack()">Go Back</button>
+<button><a href="../homepage.php">Homepage</button>
+</body>
+</html>

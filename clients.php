@@ -23,63 +23,72 @@
 		exit();
 	}
 
-	$query = "SELECT * FROM client natural join phone_number_client WHERE ";
+	if(!empty($_REQUEST['all'])) {
+		$all = $_REQUEST['all'];
+	}
+
 	$queryVariables = array();
+	if($all == 0) {
+		$query = "SELECT * FROM client natural join phone_number_client WHERE ";
 
-	$first = True;
+		$first = True;
 
-	if(!empty($_REQUEST['VAT_client'])) {
-		$VAT_client = $_REQUEST['VAT_client'];
-		if($first == True) {
-			$first = False;
+		if(!empty($_REQUEST['VAT_client'])) {
+			$VAT_client = $_REQUEST['VAT_client'];
+			if($first == True) {
+				$first = False;
+			}
+			else {
+				$query = $query . " AND "; 
+			}
+			$query = $query . "VAT = '$VAT_client' "; 
 		}
-		else {
-			$query = $query . " AND "; 
+		if(!empty($_REQUEST['client_name'])) {
+			$client_name = $_REQUEST['client_name'];
+			if($first == True) {
+				$first = False;
+			}
+			else {
+				$query = $query . " AND "; 
+			}
+			$query = $query . "name LIKE '%$client_name%' ";
 		}
-		$query = $query . "VAT = '$VAT_client' "; 
-	}
-	if(!empty($_REQUEST['client_name'])) {
-		$client_name = $_REQUEST['client_name'];
-		if($first == True) {
-			$first = False;
+		if(!empty($_REQUEST['client_address_street'])) {
+			$client_address_street = $_REQUEST['client_address_street'];
+			if($first == True) {
+				$first = False;
+			}
+			else {
+				$query = $query . " AND "; 
+			}
+			$query = $query . "street LIKE '%$client_address_street%' ";
 		}
-		else {
-			$query = $query . " AND "; 
+		if(!empty($_REQUEST['client_address_city'])) {
+			$client_address_city = $_REQUEST['client_address_city'];
+			if($first == True) {
+				$first = False;
+			}
+			else {
+				$query = $query . " AND "; 
+			}
+			$query = $query . "city LIKE '%$client_address_city%' ";
 		}
-		$query = $query . "name LIKE '%$client_name%' ";
-	}
-	if(!empty($_REQUEST['client_address_street'])) {
-		$client_address_street = $_REQUEST['client_address_street'];
-		if($first == True) {
-			$first = False;
+		if(!empty($_REQUEST['client_address_zip'])) {
+			$client_address_zip = $_REQUEST['client_address_zip'];
+			if($first == True) {
+				$first = False;
+			}
+			else {
+				$query = $query . " AND "; 
+			}
+			$query = $query . "zip LIKE '%$client_address_zip%' ";
 		}
-		else {
-			$query = $query . " AND "; 
-		}
-		$query = $query . "street LIKE '%$client_address_street%' ";
-	}
-	if(!empty($_REQUEST['client_address_city'])) {
-		$client_address_city = $_REQUEST['client_address_city'];
-		if($first == True) {
-			$first = False;
-		}
-		else {
-			$query = $query . " AND "; 
-		}
-		$query = $query . "city LIKE '%$client_address_city%' ";
-	}
-	if(!empty($_REQUEST['client_address_zip'])) {
-		$client_address_zip = $_REQUEST['client_address_zip'];
-		if($first == True) {
-			$first = False;
-		}
-		else {
-			$query = $query . " AND "; 
-		}
-		$query = $query . "zip LIKE '%$client_address_zip%' ";
-	}
 
-	$query = $query . ";";
+		$query = $query . ";";
+	}
+	else {
+		$query = "SELECT * FROM client natural join phone_number_client;";
+	}
 	
 	/* // DEBUG
 	echo("<p>$query</p>");
@@ -169,13 +178,8 @@
 
 	<?php
 
-	echo("<p><a href=\"homepage.php");
-	echo("\">");
-	echo("Back to Homepage </a></p>");
-
-
 	$connection = null;
 ?>
-
+<button><a href="homepage.php">Homepage</button>
 </body>
 </html>
