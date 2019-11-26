@@ -39,10 +39,6 @@
 	}
 	echo("</p>");
 
-	date_default_timezone_set("Europe/London");
-	$currentDate = date("Y-m-d H:i:s");
-	echo("<p>The time is " . date("Y-m-d H:i:s") . "</p>");
-
 
 	//this is in the past
 	//search consultations
@@ -66,7 +62,13 @@
 
     if ($sql->rowCount() == 0) {
 		//No consult found
-		echo("<p>Create consultation?</p>");
+		echo("<p>No consultation found.</p>");
+		echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+		echo($VAT_doctor);
+		echo("&date_timestamp=");
+		echo($date_timestamp);
+		echo("\">");
+		echo("Create consultation</a></p>");
 	}
 	else {
 		//display consultation info in table
@@ -93,7 +95,16 @@
 		}
 			
 		echo("</table>");
+
+		echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+		echo($VAT_doctor);
+		echo("&date_timestamp=");
+		echo($date_timestamp);
+		echo("\">");
+		echo("Edit consultation</a></p>");
 	}
 	
+	
+
 	$connection = null;
 	?>
