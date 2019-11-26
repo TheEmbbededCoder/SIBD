@@ -79,7 +79,7 @@
 			echo("\">");
 			echo("Appointment");
 			echo("</a></td>");
-			echo("<td><a href=\"../clientAppointment.php/?VAT_doctor=");
+			echo("<td><a href=\"../clientConsultation.php/?VAT_doctor=");
 			echo($row['VAT_doctor']);
 			echo("&date_timestamp=");
 			echo($row['date_timestamp']);

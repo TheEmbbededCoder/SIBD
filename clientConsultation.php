@@ -76,10 +76,14 @@
     if ($sql->rowCount() == 0) {
 		//No consult found
 		echo("<p>No consultation found.</p>");
-		echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+		echo("<p><a href=\"../appToConsult.php/?VAT_doctor=");
 		echo($VAT_doctor);
 		echo("&date_timestamp=");
 		echo($date_timestamp);
+		echo("&VAT_client=");
+		echo($VAT_client);
+		echo("&Client_Name=");
+		echo($Client_Name);
 		echo("\">");
 		echo("Create consultation</a></p>");
 	}
