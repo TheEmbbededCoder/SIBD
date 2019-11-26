@@ -4,7 +4,7 @@
 	<title>Consults and Appointments</title>
 </head>
 <body>
-	<h1>Consults and Appointments</h1>
+	<h1>Consultation</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";	
@@ -102,6 +102,73 @@
 		echo($date_timestamp);
 		echo("\">");
 		echo("Edit consultation</a></p>");
+
+		echo("<h2>Diagnoses and Prescriptions</h2>");
+		//check for diagnostics and prescriptions
+		$query = 'SELECT cd.ID AS ID, name, lab, dosage, description from consultation_diagnostic cd LEFT OUTER JOIN prescription p ON cd.VAT_doctor = p.VAT_doctor AND cd.date_timestamp = p.date_timestamp AND cd.ID=p.ID WHERE cd.VAT_doctor=:VAT_doctor and cd.date_timestamp=:date_timestamp;';
+		$queryVariables = array();
+		$queryVariables[':VAT_doctor'] = $VAT_doctor;
+		$queryVariables[':date_timestamp'] = $date_timestamp;
+		$sql = $connection->prepare($query);
+		if(!$sql->execute($queryVariables)){
+			$info = $connection->errorInfo();
+			echo("<p>Error: {$info[2]}</p>");
+			exit();
+		}
+		$result=$sql->fetchAll();
+
+		if($result == 0) {
+		    $info = $sql->errorInfo();
+		    echo("<p>Error: {$info[2]}</p>");
+		    exit();
+		}
+
+	    if ($sql->rowCount() == 0) {
+			//No diagnosis found
+			echo("<p>No diagnoses found.</p>");
+			echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+			echo($VAT_doctor);
+			echo("&date_timestamp=");
+			echo($date_timestamp);
+			echo("\">");
+			echo("Add Diagnosis</a></p>");
+		} else{
+			//Display Diagnosis in table
+			echo("<p>Diagnoses found.</p>");
+			echo("<table border=\"1\">");
+			echo("<tr><td>Diagnosis ID</td><td>Medication Name</td><td>Medication Lab</td><td>Medication Dosage</td><td>Medication Desription</td></tr>");
+			foreach ($result as $row) {
+				echo("<tr><td>");
+				echo($row['ID']);
+				echo("</td>");
+				echo("<td>");
+				echo($row['name']);
+				echo("</td>");
+				echo("<td>");
+				echo($row['lab']);
+				echo("</td>");
+				echo("<td>");
+				echo($row['dosage']);
+				echo("</td>");
+				echo("<td>");
+				echo($row['description']);
+				echo("</td></tr>");
+			}
+				
+			echo("</table>");
+
+
+
+
+
+
+			// echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+			// echo($VAT_doctor);
+			// echo("&date_timestamp=");
+			// echo($date_timestamp);
+			// echo("\">");
+			// echo("Edit Diagnosis</a></p>");
+		}
 	}
 	
 	
