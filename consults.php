@@ -60,17 +60,28 @@
     } 
 	else {
 		echo("<table border=\"1\">");
-		echo("<tr><td>Appointment/Consultation Date</td><td>Doctor</td></tr>");
+		echo("<tr><td>Date</td><td>Doctor</td></tr>");
 		foreach($result as $row) {
-			echo("<tr><td><a href=\"../clientAppointment.php/?VAT_doctor=");
+			echo("<tr><td>");
+			echo($row['date_timestamp']);
+			echo("</td>");
+			echo("<td>");
+			echo($row['VAT_doctor']);
+			echo("</td>");
+			echo("<td><a href=\"../clientAppointment.php/?VAT_doctor=");
 			echo($row['VAT_doctor']);
 			echo("&date_timestamp=");
 			echo($row['date_timestamp']);
 			echo("\">");
-			echo($row['date_timestamp']);
+			echo("Appointment");
 			echo("</a></td>");
-			echo("<td>");
+			echo("<td><a href=\"../clientConsultation.php/?VAT_doctor=");
 			echo($row['VAT_doctor']);
+			echo("&date_timestamp=");
+			echo($row['date_timestamp']);
+			echo("\">");
+			echo("Consultation");
+			echo("</a></td>");
 			echo("</td></tr>");
 		}
 		echo("</table>");
