@@ -22,30 +22,33 @@
 		$VAT = $_REQUEST['vat'];
 		$name = $_REQUEST['name'];
 
+		
 		$birth_date = $_REQUEST['birth_date'];
-        $time=strtotime($birth_date);
-        $year=date("Y",$time);
-        $month=date("m",$time);
-        $day=date("d",$time);
+		$time=strtotime($birth_date);
+		$year=date("Y",$time);
+		$month=date("m",$time);
+		$day=date("d",$time);
 
+		$dateActual = date("Y-m-d");
+		$time=strtotime($dateActual);
+		$yearActual = date("Y",$time);
+		$monthActual=date("m",$time);
+		$dayActual=date("d",$time);
 
-        $dateActual = date("Y-m-d");
-        $time=strtotime($dateActual);
-        $yearActual = date("Y",$time);
-        $monthActual=date("m",$time);
-        $dayActual=date("d",$time);
-
-        if(mothActual >= month){
-            if(dayActual >= day){
-                $age = $yearActual - $year;
-            }
-            else{
-                $age = $yearActual - $year - 1;
-            }
-        }
-        else{
-            $age = $yearActual - $year - 1;
-        }
+		if($monthActual > $month){
+			$age = $yearActual - $year;
+		}
+		elseif($monthActual < $month){
+			$age = $yearActual - $year - 1;
+		}
+		elseif($monthActual == $month){
+			if($dayActual>=$day){
+				$age = $yearActual - $year;
+			}
+			else{
+				$age = $yearActual - $year - 1;
+			}
+		}
 
 		$street = $_REQUEST['street'];
 
@@ -66,7 +69,7 @@
 
 		$query6 = "UPDATE phone_number_client SET phone = '$phone' WHERE VAT ='$VAT' ";
 
-		echo("<p>The client will be updated.</p>");
+		echo("<p>Will be updated the client.</p>");
 
 		$nrows = $connection->exec($query);
 		$nrows1 = $connection->exec($query1);

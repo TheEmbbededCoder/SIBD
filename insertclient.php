@@ -27,7 +27,34 @@
 	$birth_date = $_REQUEST['birth_date'];
 	$time=strtotime($birth_date);
 	$year=date("Y",$time);
-	$age = 2020 - $year;
+	$month=date("m",$time);
+	$day=date("d",$time);
+
+
+	$dateActual = date("Y-m-d");
+	$time=strtotime($dateActual);
+	$yearActual = date("Y",$time);
+	$monthActual=date("m",$time);
+	$dayActual=date("d",$time);
+
+	if($monthActual > $month){
+		echo("aqui caralho1");
+		$age = $yearActual - $year;
+	}
+	elseif($monthActual < $month){
+		echo("aqui caralho2");
+		$age = $yearActual - $year - 1;
+	}
+	elseif($monthActual == $month){
+		if($dayActual>=$day){
+			echo("aqui caralho3");
+			$age = $yearActual - $year;
+		}
+		else{
+			echo("aqui caralho4");
+			$age = $yearActual - $year - 1;
+		}
+	}
 
 	$street = $_REQUEST['street'];
 

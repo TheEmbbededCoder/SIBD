@@ -10,11 +10,9 @@
 	$user="ist425355";	
 	$password="emyg3992";
 	$dbname = $user;	
-
 	// Try to connect to the database
 	try	{
 		$connection = new PDO("mysql:host=" . $host. ";dbname=" . $dbname, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
-
 	}
 	catch(PDOException $exception) {
 		echo("<p>Error: ");
@@ -22,7 +20,6 @@
 		echo("</p>");
 		exit();
 	}
-
 	// Show the received client
 	echo("<p><b>Client - </b>");
 	// Gets the VAT of the selected client
@@ -38,26 +35,21 @@
 		echo($Client_Name);
 	}
 	echo("</p>");
-
 	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client ORDER BY date_timestamp;";
     $queryVariables = array();
 	$queryVariables[':VAT_client'] = $VAT_client;
-
 	$sql = $connection->prepare($query);
 	if(!$sql->execute($queryVariables)){
 		$info = $connection->errorInfo();
 		echo("<p>Error: {$info[2]}</p>");
 		exit();
 	}
-
 	$result=$sql->fetchAll();
-
 	if($result == 0) {
         $info = $sqls->errorInfo();
         echo("<p>Error: {$info[2]}</p>");
         exit();
     }
-
     $nrows = $sql->rowCount();
     if ($nrows == 0) {
         echo("<p>There are no appointments for this client.</p>");
@@ -76,9 +68,8 @@
 		}
 		echo("</table>");
 	}
-
 	?>
-	<form action="/ist425355/searchconsults.php" method="post">
+	<form action="/ist425305/searchconsults.php" method="post">
 		<h1>New Appointments</h1>
 		<p>Date: <input type='date' name='date' required/></p>
 		<p>Time: <input type='time' name='time' min="09:00" max="17:00" required/></p>

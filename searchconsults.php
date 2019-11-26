@@ -7,11 +7,9 @@
 	$password="emyg3992";
 	$dsn = "mysql:host=$host;dbname=$user";
 	$dbname = $user;	
-
 	// Try to connect to the database
 	try	{
 		$connection = new PDO("mysql:host=" . $host. ";dbname=" . $dbname, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
-
 	}
 	catch(PDOException $exception) {
 		echo("<p>Error: ");
@@ -19,7 +17,6 @@
 		echo("</p>");
 		exit();
 	}
-
 	// Show the received client
 	echo("<p><b>Client: </b>");
 	// Gets the VAT of the selected client
@@ -35,7 +32,6 @@
 		echo($Client_Name);
 	}
 	echo("</p>");
-
 	// Show the received client
 	echo("<p><b>Date: </b>");
 	// Gets the VAT of the selected client
@@ -50,23 +46,19 @@
 		echo($time);
 	}
 	echo("</p>");
-
 	$datestr = '"' . $date . " " . substr($time, 0, 2) . '"';
-
 	$query = 	"SELECT VAT, name, specialization 
 				FROM doctor natural join employee 
 				WHERE VAT not in (
 					SELECT VAT_doctor 
 					FROM appointment 
 					WHERE date_timestamp = $datestr);";
-
 	$result = $connection->query($query);
 	if($result == FALSE) {
 		$info = $connection->errorInfo();
 		echo("<p>Error: {$info[2]}</p>");
 		exit();
 	}
-
 	echo("<h3>Available Doctors:</h3>");
 	echo("<table border=\"1\">");
 	echo("<tr><td>Name</td><td>Specialization</td></tr>");
@@ -76,7 +68,7 @@
 		echo($row['name']);
 		echo("</td><td>");
 		echo($row['specialization']);
-		echo("<td><a href=\"newappointment.php/?VAT_doctor=");
+		echo("<td><a href=\"/ist425305/newappointment.php/?VAT_doctor=");
 		echo($row['VAT']);
 		echo("&VAT_client=");
         echo($VAT_client);
@@ -88,7 +80,6 @@
 		echo("</td></tr>");
 	}
 	echo("</table>");
-
 	
 	$connection = null;
 ?>
