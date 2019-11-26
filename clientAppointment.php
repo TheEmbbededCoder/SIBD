@@ -4,11 +4,11 @@
 	<title>Consults and Appointments</title>
 </head>
 <body>
-	<h1>Consults and Appointments</h1>
+	<h1>Appointment</h1>
 	<?php
 	$host="db.ist.utl.pt";
-	$user="ist425362";	
-	$password="txsq2828";
+	$user="ist425355";	
+	$password="emyg3992";
 	$dbname = $user;	
 
 	// Try to connect to the database
@@ -64,7 +64,7 @@
 	}
 
     if ($sql->rowCount() == 0) {
-    	echo("<p>No appointment found.</p>");
+    	echo("<p>No appointment found at $date_timestamp.</p>");
 	}
 
 	//Display info in table

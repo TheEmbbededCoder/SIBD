@@ -7,8 +7,8 @@
 	<h1>Consults and Appointments</h1>
 	<?php
 	$host="db.ist.utl.pt";
-	$user="ist425362";	
-	$password="txsq2828";
+	$user="ist425355";	
+	$password="emyg3992";
 	$dbname = $user;	
 
 	// Try to connect to the database

@@ -87,7 +87,7 @@
 		echo("</table>");
 	}
 	?>
-	<form action="/ist425305/searchconsults.php" method="post">
+	<form action="../searchconsults.php" method="post">
 		<h1>New Appointments</h1>
 		<p>Date: <input type='date' name='date' required/></p>
 		<p>Time: <input type='time' name='time' min="09:00" max="17:00" required/></p>
