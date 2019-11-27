@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Add Prescription</title>
+	<title>Add Procedure Charting</title>
 	<script>
 	function goBack() {
 		window.history.back()
@@ -11,7 +11,7 @@
 	</script>
 </head>
 <body>
-	<h1>Add Prescription</h1>
+	<h1>Add Procedure Charting</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";  
@@ -57,56 +57,26 @@
 	}
 	echo("</p>");
 
-	// Show the received appointment
-	echo("<p><b>Appointment Date: </b>");
+	// Show the received doctor
+	echo("<p><b>Procedure name: </b>");
 	// Gets the VAT of the selected client
-	if(isset($_REQUEST['date_timestamp'])) {
-		$date_timestamp = $_REQUEST['date_timestamp'];
-		echo($date_timestamp);
+	if(isset($_REQUEST['name'])) {
+		$name = $_REQUEST['name'];
+		echo($name);
 	}
 	echo("</p>");
 
-	// Show the diagnostic code
-	echo("<p><b>Diagnostic Code: </b>");
-	// Gets the VAT of the selected client
-	if(isset($_REQUEST['id'])) {
-		$id = $_REQUEST['id'];
-		echo($id);
-	}
-	echo("</p>");
+	
 	
 	?>
 	  <form action='#' method='post'>
-		<h3>Add new Prescription:</h3>
-	    <p>Medicine:
-			<select name="medication">
-			<?php
-			$sql = "SELECT * FROM medication ORDER BY name";
-			$result = $connection->query($sql);
-			if ($result == FALSE)
-			{
-			  $info = $connection->errorInfo();
-			  echo("<p>Error: {$info[2]}</p>");
-			  exit();
-			}
-			foreach($result as $row)
-			{
-			  $meds = $row['name'];
-			  $lab = $row['lab'];
-			  $allmeds = $meds . "_" . $lab;
-			  echo("<option  name=\"allmeds\" value=\"$allmeds\">$meds - $lab</option>");
-			}
-			?>
-		  </select>
-		</p>
-	    <p>Dosage:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='dosage' required></textarea></p>
-		<p>Description:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='description' required></textarea></p>
-	    <input type="hidden" name="VAT_client" value="<?=$VAT_client?>">
+		<h3>Add measurements:</h3>
+
+		<!-- Fazer uma pesquisa dos procedures existentes na consulta e apresentar um menu de opcao -->
+	    
+	    <input type="hidden" name="name" value="<?=$name?>">
 	    <input type="hidden" name="VAT_doctor" value="<?=$VAT_doctor?>">
 	    <input type="hidden" name="date_timestamp" value="<?=$date_timestamp?>">
-	    <input type="hidden" name="id" value="<?=$id?>">
 		<?php
 	    if (empty($_POST['dosage'])) {
 	    	echo("<p><input type=\"submit\" name=\"submit\" value=\"Submit\"/></p>");
