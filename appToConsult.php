@@ -1,6 +1,17 @@
 <html>
 <head>
-	<title>Add Consult Information</title>
+	<?php
+	if(isset($_REQUEST['Edit'])) {
+		$Edit = $_REQUEST['Edit'];
+		if($Edit) {
+			echo("<title>Edit Consult Information</title>");
+		}
+		else {
+			echo("<title>Add Consult Information</title>");
+		}
+	}
+	
+	?>
 	<script>
 	function goBack() {
 		window.history.back()
@@ -11,8 +22,16 @@
 	</script>
 </head>
 <body>
-	<h1>Add Consult Information</h1>
 	<?php
+	if(isset($_REQUEST['Edit'])) {
+		$Edit = $_REQUEST['Edit'];
+		if($Edit) {
+			echo("<h1>Edit Consult Information</h1>");
+		}
+		else {
+			echo("<h1>Add Consult Information</h1>");
+		}
+	}
 	$host="db.ist.utl.pt";
 	$user="ist425355";  
 	$password="emyg3992";
@@ -73,7 +92,7 @@
 	echo("</p>");
 	
 	?>
-	  <form action='addconsult.php' method='post'>
+	  <form action="#" method='post'>
 		<h3>Input the consult information:</h3>
 		<p>VAT nurse:
 		<select name="VAT_nurse">
@@ -119,81 +138,90 @@
 	        echo("<input type='checkbox' name='diagnosis[]' value='$id'> $desc<br>");
 	      }
 
-	    if (!empty($_POST['s'])) {
-	   		echo("<p><input type='submit' value='Edit'/></p>");
-		}
-	    else {
-	    	echo("<p><input type='submit' value='Add'/></p>");
+	    if (empty($_POST['s'])) {
+	    	echo("<p><input type=\"submit\" name=\"submit\" value=\"Submit\"/></p>");
 		}
 	    ?>
 	    <input type="hidden" name="VAT_client" value="<?php echo($VAT_client);?>">
 	    <input type="hidden" name="VAT_doctor" value="<?php echo($VAT_doctor);?>">
 	    <input type="hidden" name="date_timestamp" value="<?php echo($date_timestamp);?>">
 	    <input type="hidden" name="Client_Name" value="<?php echo($Client_Name);?>">
+	    <input type="hidden" name="Edit" value="<?php echo($Edit);?>">
 	  </form>
 
 	  <?php
 
-if (!empty($_POST['s']))
+if (isset($_POST['submit']))//to run PHP script on submit
 {	
+	$Edit = $_POST['Edit'];
 	$s = $_POST['s'];
 	$o = $_POST['o'];
 	$a = $_POST['a'];
 	$p = $_POST['p'];
-	echo("<h3>New Consultation Added</h3>");
-	echo("<p>Fill the form again if you want to edit the consultation - Press Edit to confirm the changes.</p>");
-	echo("<p>press Go Back to return.</p>");
-	echo("<p>");
-    echo($s);
-    echo("<p></p>");
-    echo($o);
-    echo("<p></p>");
-    echo($a);
-    echo("<p></p>");
-    echo($p);
-    echo("<p></p>");
-    echo($_POST['VAT_nurse']);
-    echo("<p></p>");
-    echo($_POST['VAT_client']);
-    echo("<p></p>");
-    echo($_POST['VAT_doctor']);
-    echo("<p></p>");
-    echo($_POST['date_timestamp']);
-	echo("</p>");
-	echo("<button onclick=\"goBack2()\">Go Back</button>");
-	echo("<button><a href=\"../homepage.php\">Homepage</button>");
+	$VAT_client = $_POST['VAT_client'];
+	$VAT_doctor = $_POST['VAT_doctor'];
+	$VAT_nurse = $_POST['VAT_nurse'];
+	$date_timestamp = $_POST['date_timestamp'];
+	if($Edit) {
+		echo("<h3>Consultation Eddited</h3>");
+		echo("<p>press Go Back to return.</p>");
+		
+		echo("<button onclick=\"goBack2()\">Go Back</button>");
+		echo("<button><a href=\"../homepage.php\">Homepage</button>");
 
-	$query1 = "INSERT INTO consultation VALUES (':VAT_doctor', ':date_timestamp', ':s', ':o', ':a', ':p');";
-	$queryvariables = array([':VAT_doctor' => $VAT_doctor, 
-							':date_timestamp' => $date_timestamp, 
-							':s' => $s, 
-							':o' => $o, 
-							':a' => $a, 
-							':p' => $p
-							]);
-	$sql = $connection->prepare($query1);
-	echo("<p>");
-	echo($sql);
-	echo("</p>");
-	if (!$sql->execute($queryvariables)) {
-		$info = $connection->errorInfo();
-		echo("<p>Error: {$info[2]}</p>");
-		exit();
-	}
+		// Insert consultation
+		$sql = "UPDATE consultation SET SOAP_S = '$s', SOAP_O = '$o', SOAP_A = '$a', SOAP_P = '$p' WHERE VAT_doctor ='$VAT_doctor' AND date_timestamp = '$date_timestamp'";
+		$nrows = $connection->exec($sql);
+		if($nrows != 0) {
+			echo("<p>Sucessfully changed consultation</p>");
+		}
 
-	$query2 = "INSERT INTO consultation_assistant VALUES (':VAT_doctor', ':date_timestamp', ':VAT_nurse');";
-	echo("<p>");
-	echo($query2);
-	echo("</p>");
-	$queryvariables = array([':VAT_doctor' => $VAT_doctor, 
-							':date_timestamp' => $date_timestamp, 
-							':VAT_nurse' => $VAT_nurse]);
-	$sql = $connection->prepare($query2);
-	if (!$sql->execute($queryvariables)) {
-		$info = $connection->errorInfo();
-		echo("<p>Error: {$info[2]}</p>");
-		exit();
+		// Insert consultation assistant
+		$sql = "UPDATE consultation_assistant SET VAT_nurse = '$VAT_nurse' WHERE VAT_doctor ='$VAT_doctor' AND date_timestamp = '$date_timestamp'";
+		$nrows = $connection->exec($sql);
+		if($nrows != 0) {
+			echo("<p>Sucessfully changed consultation assistant</p>");
+		}
+
+		if(!empty($_POST['diagnosis'])){
+			// Loop to store and display values of individual checked checkbox.
+			foreach($_POST['diagnosis'] as $selected){
+				// Insert consultation assistant
+				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$selected')";
+				$nrows = $connection->exec($sql);
+				if($nrows != 0) {
+					echo("<p>Sucessfully added consultation diagnostic - ");
+					echo($selected);
+					echo("</p>");
+				}
+			}
+		}
 	}
+	else {
+		echo("<h3>New Consultation Added</h3>");
+		echo("<p>press Go Back to return.</p>");
+		
+		echo("<button onclick=\"goBack2()\">Go Back</button>");
+		echo("<button><a href=\"../homepage.php\">Homepage</button>");
+
+		// Insert consultation
+		$sql = "INSERT INTO consultation VALUES ('$VAT_doctor', '$date_timestamp', '$s', '$o', '$a', '$p')";
+		$nrows = $connection->exec($sql);
+
+		// Insert consultation assistant
+		$sql = "INSERT INTO consultation_assistant VALUES ('$VAT_doctor', '$date_timestamp', '$VAT_nurse')";
+		$nrows = $connection->exec($sql);
+
+		if(!empty($_POST['diagnosis'])){
+			// Loop to store and display values of individual checked checkbox.
+			foreach($_POST['diagnosis'] as $selected){
+				// Insert consultation assistant
+				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$VAT_nurse')";
+				$nrows = $connection->exec($sql);
+			}
+		}
+	}
+	
 }
 else {
 	echo("<button onclick=\"goBack()\">Go Back</button>");

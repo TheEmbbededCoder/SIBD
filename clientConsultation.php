@@ -6,6 +6,16 @@
 	function goBack() {
 		window.history.back()
 	}
+	// Reload page when going back in the history
+	window.addEventListener( "pageshow", function ( event ) {
+	  var historyTraversal = event.persisted || 
+	                         ( typeof window.performance != "undefined" && 
+	                              window.performance.navigation.type === 2 );
+	  if ( historyTraversal ) {
+	    // Handle page restore.
+	    window.location.reload();
+	  }
+	});
 	</script>
 </head>
 <body>
@@ -80,6 +90,8 @@
 
     if ($sql->rowCount() == 0) {
 		//No consult found
+
+		$Edit = 0;
 		echo("<p>No consultation found.</p>");
 		echo("<p><a href=\"../appToConsult.php/?VAT_doctor=");
 		echo($VAT_doctor);
@@ -89,6 +101,8 @@
 		echo($VAT_client);
 		echo("&Client_Name=");
 		echo($Client_Name);
+		echo("&Edit=");
+		echo($Edit);
 		echo("\">");
 		echo("Create consultation</a></p>");
 	}
@@ -117,11 +131,17 @@
 		}
 			
 		echo("</table>");
-
-		echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
+		$Edit = 1;
+		echo("<p><a href=\"../appToConsult.php/?VAT_doctor=");
 		echo($VAT_doctor);
 		echo("&date_timestamp=");
 		echo($date_timestamp);
+		echo("&VAT_client=");
+		echo($VAT_client);
+		echo("&Client_Name=");
+		echo($Client_Name);
+		echo("&Edit=");
+		echo($Edit);
 		echo("\">");
 		echo("Edit consultation</a></p>");
 
