@@ -1,6 +1,11 @@
 <html>
 <head>
 	<title>Updating Client</title>
+	<script>
+	function goBack() {
+		window.history.back()
+	}
+	</script>
 </head>
 <body>
 	<h1>Updating Client</h1>
@@ -21,5 +26,7 @@
 		<p>CellPhone Number: <input type="tel" name="phone" pattern="[0-9]{9}" required/></p>
 		<p><input type="submit" value="Submit"/></p>
 	</form>
+<button onclick="goBack()">Go Back</button>
+<button><a href="../homepage.php">Homepage</button>
 </body>
 </html>

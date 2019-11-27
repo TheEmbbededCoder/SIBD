@@ -1,6 +1,14 @@
 <html>
 <head>
 	<title>Add Prescription</title>
+	<script>
+	function goBack() {
+		window.history.back()
+	}
+	function goBack2() {
+		window.history.go(-2)
+	}
+	</script>
 </head>
 <body>
 	<h1>Add Prescription</h1>
@@ -42,30 +50,33 @@
 	// Show the received doctor
 	echo("<p><b>Doctor: </b>");
 	// Gets the VAT of the selected client
-	if(isset($_REQUEST['VAT_client'])) {
-		$VAT_client = $_REQUEST['VAT_doctor'];
+	if(isset($_REQUEST['VAT_doctor'])) {
+		$VAT_doctor = $_REQUEST['VAT_doctor'];
 		echo("VAT: ");
-		echo($VAT_client);
+		echo($VAT_doctor);
 	}
 	echo("</p>");
 
 	// Show the received appointment
 	echo("<p><b>Appointment Date: </b>");
 	// Gets the VAT of the selected client
-	if(isset($_REQUEST['date'])) {
-		$date = $_REQUEST['date'];
-		echo($date);
+	if(isset($_REQUEST['date_timestamp'])) {
+		$date_timestamp = $_REQUEST['date_timestamp'];
+		echo($date_timestamp);
 	}
+	echo("</p>");
+
+	// Show the diagnostic code
+	echo("<p><b>Diagnostic Code: </b>");
 	// Gets the VAT of the selected client
-	if(isset($_REQUEST['time'])) {
-		$time = $_REQUEST['time'];
-		echo(" at ");
-		echo($time);
+	if(isset($_REQUEST['id'])) {
+		$id = $_REQUEST['id'];
+		echo($id);
 	}
 	echo("</p>");
 	
 	?>
-	  <form action='addprescription.php' method='post'>
+	  <form action='#' method='post'>
 		<h3>Add new Prescription:</h3>
 	    <p>Medicine:
 			<select name="medication">
@@ -83,47 +94,60 @@
 			  $meds = $row['name'];
 			  $lab = $row['lab'];
 			  $allmeds = $meds . "_" . $lab;
-			  echo("<option value=\"$allmeds\">$meds - $lab</option>");
+			  echo("<option  name=\"allmeds\" value=\"$allmeds\">$meds - $lab</option>");
 			}
 			?>
 		  </select>
 		</p>
 	    <p>Dosage:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='dosage'></textarea></p>
+	    <p><textarea type='text' style="width:250px;height:100px;" name='dosage' required></textarea></p>
 		<p>Description:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='description'></textarea></p>
-	    <input type="hidden" id="custId" name="VAT_client" value="<?=$VAT_client?>">
-	    <input type="hidden" id="custId" name="VAT_doctor" value="<?=$VAT_doctor?>">
-	    <input type="hidden" id="custId" name="date" value="<?=$date?>">
-	    <input type="hidden" id="custId" name="time" value="<?=$time?>">
-		<p><input type='submit' value='Add'/></p>
+	    <p><textarea type='text' style="width:250px;height:100px;" name='description' required></textarea></p>
+	    <input type="hidden" name="VAT_client" value="<?=$VAT_client?>">
+	    <input type="hidden" name="VAT_doctor" value="<?=$VAT_doctor?>">
+	    <input type="hidden" name="date_timestamp" value="<?=$date_timestamp?>">
+	    <input type="hidden" name="time" value="<?=$time?>">
+	    <input type="hidden" name="id" value="<?=$id?>">
+		<?php
+	    if (empty($_POST['dosage'])) {
+	    	echo("<p><input type=\"submit\" name=\"submit\" value=\"Submit\"/></p>");
+		}
+		?>
 	  </form>
 
 	  <?php
+
+if (isset($_POST['submit']))//to run PHP script on submit
+{	
+	$medication = $_POST['medication'];
+	$arr = explode("_", $medication, 2);
+	$name = $arr[0];
+	$lab = $arr[1];
+	$dosage = $_POST['dosage'];
+	$description = $_POST['description'];
+	$VAT_client = $_POST['VAT_client'];
+	$VAT_doctor = $_POST['VAT_doctor'];
+	$date_timestamp = $_POST['date_timestamp'];
+	$id = $_POST['id'];
+	echo("<h3>New Prescription Added</h3>");
+	
+	// Insert prescription
+	$sql = "INSERT INTO prescription VALUES ('$name', '$lab', '$VAT_doctor', '$date_timestamp', '$id', '$dosage', '$description')";
+	$nrows = $connection->exec($sql);
+	if($nrows != 0) {
+		echo("<p>Sucessfully added prescription</p>");
+	}
+
+	echo("<button onclick=\"goBack2()\">Go Back</button>");
+	echo("<button><a href=\"../homepage.php\">Homepage</button>");
+}
+
+else {
+	echo("<button onclick=\"goBack()\">Go Back</button>");
+	echo("<button><a href=\"../homepage.php\">Homepage</button>");
+}
+
 	$connection = null;
 ?>
-
 </body>
 </html>
-<?php
-if (!empty($_POST['medication']))
-{	
-	echo("<h3>New Prescription Added</h3>");
-	echo("<p>Fill the form to add one more prescription or press back to return</p>");
-	echo("<p>");
-    echo($_POST['medication']);
-    echo("<p></p>");
-    echo($_POST['dosage']);
-    echo("<p></p>");
-    echo($_POST['description']);
-    echo("<p></p>");
-    echo($_POST['VAT_client']);
-    echo("<p></p>");
-    echo($_POST['VAT_doctor']);
-    echo("<p></p>");
-    echo($_POST['date']);
-    echo("<p></p>");
-    echo($_POST['time']);
-	echo("</p>");
-}
-?>

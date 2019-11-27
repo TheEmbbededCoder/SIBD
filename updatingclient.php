@@ -1,4 +1,7 @@
 <html>
+<head>
+	<title>Update Client</title>
+</head>
 	<body>
 	<?php
 		$host="db.ist.utl.pt";

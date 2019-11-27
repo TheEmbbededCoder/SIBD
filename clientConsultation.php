@@ -189,27 +189,28 @@
 				echo("</td>");
 				echo("<td>");
 				echo($row['description']);
-				echo("</td>");
-				echo("<td>");
-				echo("<a href=\"../clientConsultation.php/?VAT_doctor=");
-				echo($VAT_doctor);
-				echo("&date_timestamp=");
-				echo($date_timestamp);
-				echo("\">");
-				echo("Edit Diagnosis</a>");
+				if(empty($row['name'])) {
+					echo("</td>");
+					echo("<td>");	
+					echo("<a href=\"../addprescription.php/?VAT_doctor=");
+					echo($VAT_doctor);
+					echo("&date_timestamp=");
+					echo($date_timestamp);
+					echo("&VAT_client=");
+					echo($VAT_client);
+					echo("&Client_Name=");
+					echo($Client_Name);
+					echo("&id=");
+					echo($row['ID']);
+					echo("\">");
+					echo("Add Prescription</a>");
+				}
 				echo("</td></tr>");
 			}
-				
 			echo("</table>");
-
-			echo("<p><a href=\"../clientConsultation.php/?VAT_doctor=");
-			echo($VAT_doctor);
-			echo("&date_timestamp=");
-			echo($date_timestamp);
-			echo("\">");
-			echo("Add Diagnosis</a></p>");
 		}
 	}
+	echo("<p> </p>");
 	
 	
 

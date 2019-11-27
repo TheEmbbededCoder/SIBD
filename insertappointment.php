@@ -1,6 +1,14 @@
 <html>
+<head>
+	<title>Appointment Inserted</title>
+	<script>
+	function goBack() {
+		window.history.back()
+	}
+	</script>
+</head>
 <body>
-	<h1>Clients</h1>
+	<h1>Appointment Inserted</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";	
@@ -50,7 +58,5 @@
 
 	$connection = null;
 ?>
-
-
 </body>
 </html>

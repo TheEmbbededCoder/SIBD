@@ -1,4 +1,12 @@
 <html>
+<head>
+	<title>Information about Consultation</title>
+	<script>
+		function goBack() {
+		window.history.back()
+	}
+	</script>
+</head>
 <body>
 	<h1>Search Doctors</h1>
 	<?php
@@ -68,7 +76,7 @@
 		echo($row['name']);
 		echo("</td><td>");
 		echo($row['specialization']);
-		echo("<td><a href=\"/ist425305/newappointment.php/?VAT_doctor=");
+		echo("<td><a href=\"newappointment.php/?VAT_doctor=");
 		echo($row['VAT']);
 		echo("&VAT_client=");
         echo($VAT_client);
@@ -83,6 +91,8 @@
 	
 	$connection = null;
 ?>
-
+<p> </p>
+<button onclick="goBack()">Go Back</button>
+<button><a href="../homepage.php">Homepage</button>
 </body>
 </html>

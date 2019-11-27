@@ -114,13 +114,13 @@
 		  </select>
 		</p>
 		<p>Subjective:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='s'></textarea></p>
+	    <p><textarea type='text' style="width:250px;height:100px;" name='s' required></textarea></p>
 	    <p>Objective:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='o'></textarea></p>
+	    <p><textarea type='text' style="width:250px;height:100px;" name='o' required></textarea></p>
 	    <p>Assessment:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='a'></textarea></p>
+	    <p><textarea type='text' style="width:250px;height:100px;" name='a' required></textarea></p>
 	    <p>Plan:</p>
-	    <p><textarea type='text' style="width:250px;height:100px;" name='p'></textarea></p>
+	    <p><textarea type='text' style="width:250px;height:100px;" name='p' required></textarea></p>
 		<p>Diagnosis:<br/>
 	    <?php
 	      $sql = "SELECT * FROM diagnostic_code";
@@ -184,13 +184,13 @@ if (isset($_POST['submit']))//to run PHP script on submit
 		}
 
 		if(!empty($_POST['diagnosis'])){
+			echo("<p>Sucessfully added consultation diagnostic - ");
 			// Loop to store and display values of individual checked checkbox.
 			foreach($_POST['diagnosis'] as $selected){
 				// Insert consultation assistant
 				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$selected')";
 				$nrows = $connection->exec($sql);
 				if($nrows != 0) {
-					echo("<p>Sucessfully added consultation diagnostic - ");
 					echo($selected);
 					echo("</p>");
 				}
@@ -207,17 +207,28 @@ if (isset($_POST['submit']))//to run PHP script on submit
 		// Insert consultation
 		$sql = "INSERT INTO consultation VALUES ('$VAT_doctor', '$date_timestamp', '$s', '$o', '$a', '$p')";
 		$nrows = $connection->exec($sql);
+		if($nrows != 0) {
+			echo("<p>Sucessfully added consultation</p>");
+		}
 
 		// Insert consultation assistant
 		$sql = "INSERT INTO consultation_assistant VALUES ('$VAT_doctor', '$date_timestamp', '$VAT_nurse')";
 		$nrows = $connection->exec($sql);
+		if($nrows != 0) {
+			echo("<p>Sucessfully added consultation assistant</p>");
+		}
 
 		if(!empty($_POST['diagnosis'])){
+			echo("<p>Sucessfully added consultation diagnostic - ");
 			// Loop to store and display values of individual checked checkbox.
 			foreach($_POST['diagnosis'] as $selected){
 				// Insert consultation assistant
 				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$VAT_nurse')";
 				$nrows = $connection->exec($sql);
+				if($nrows != 0) {
+					echo($selected);
+					echo("</p>");
+				}
 			}
 		}
 	}

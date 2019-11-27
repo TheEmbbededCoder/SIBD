@@ -6,6 +6,7 @@
   <form name="client_form" action="clients.php" method="post">
   	<h1>Dental Clinic</h1>
     <h2>Check client</h2>
+    <p>If clients is not present on the database, press "List all clients" and fill the form to add client.</p>
     <p>VAT client: <input type="text" name="VAT_client" required/></p>
     <p>Client Name: <input type="text" name="client_name"/></p>
     <h4>Client Address</h4>
