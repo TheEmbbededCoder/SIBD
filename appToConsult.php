@@ -223,7 +223,7 @@ if (isset($_POST['submit']))//to run PHP script on submit
 			// Loop to store and display values of individual checked checkbox.
 			foreach($_POST['diagnosis'] as $selected){
 				// Insert consultation assistant
-				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$VAT_nurse')";
+				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$selected')";
 				$nrows = $connection->exec($sql);
 				if($nrows != 0) {
 					echo($selected);
