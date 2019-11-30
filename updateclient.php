@@ -11,7 +11,7 @@
 	<h1>Updating Client</h1>
 	<p>Client with VAT = <?=$_REQUEST['VAT_client']?> and name = <?=$_REQUEST['Client_Name']?> will be updated</p>
 	
-	<form action='/ist425355/updatingclient.php' method='post'>
+	<form action='../updatingclient.php' method='post'>
 		<p><input type="hidden" name="vat" value="<?=$_REQUEST['VAT_client']?>"/></p>
 		<p><input type="hidden" name="name"	value="<?=$_REQUEST['Client_Name']?>"/></p>
 		<p>Birth Date: <input type='date' name='birth_date' required/></p>
