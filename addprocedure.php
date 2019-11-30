@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Add Prescription</title>
+	<title>Add Procedure</title>
 	<script>
 	function goBack() {
 		window.history.back()
@@ -11,7 +11,7 @@
 	</script>
 </head>
 <body>
-	<h1>Add Prescription</h1>
+	<h1>Add Procedure</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";  
