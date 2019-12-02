@@ -54,13 +54,9 @@
 		}
 
 		$street = $_REQUEST['street'];
-
 		$city = $_REQUEST['city'];
-
 		$zip = $_REQUEST['zip'];
-
 		$gender = $_REQUEST['gender2'];
-		
 		$phone = $_REQUEST['phone'];
 
 		$query = "UPDATE client SET birth_date = '$birth_date' WHERE VAT ='$VAT' AND name = '$name' ";
@@ -72,7 +68,7 @@
 
 		$query6 = "UPDATE phone_number_client SET phone = '$phone' WHERE VAT ='$VAT' ";
 
-		echo("<p>Will be updated the client.</p>");
+		echo("<h3>The client will be updated.</h3>");
 
 		$nrows = $connection->exec($query);
 		$nrows1 = $connection->exec($query1);
@@ -82,16 +78,19 @@
 		$nrows5 = $connection->exec($query5);
 		$nrows6 = $connection->exec($query6);
 
-		echo("Success !");
+		if($nrows == 1 || $nrows1 == 1 || $nrows2 ==1 || $nrows3 == 1 || $nrows4 == 1 || $nrows5 == 1 || $nrows6 == 1 ) {
+			echo "Values updated !";
+		}
+		else {
+			echo "Client found, but no data changed";
+		}
 
  		?>
 		<form action='clients.php' method='post'>
-		<p><input type="hidden" name="VAT_client"
-			value="<?=$_REQUEST['vat']?>"/></p>
-		<p><input type="hidden" name="client_name"
-				value="<?=$_REQUEST['name']?>"/></p>
-		<p><input type="submit" value="Continue"/></p>
-		
+			<p><input type="hidden" name="VAT_client" value="<?=$_REQUEST['vat']?>"/></p>
+			<p><input type="hidden" name="client_name" value="<?=$_REQUEST['name']?>"/></p>
+			<p><input type="submit" value="Continue"/></p>
+			</form>
 		<?php
 
 		$connection = null;

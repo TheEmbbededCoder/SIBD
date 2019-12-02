@@ -43,10 +43,9 @@
 	date_default_timezone_set("Europe/London");
 	$currentDate = date("Y-m-d H:i:s");
 	echo("<p>The time is " . date("Y-m-d H:i:s") . "</p>");
-	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client AND date_timestamp < :currentDate ORDER BY date_timestamp;";
+	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client ORDER BY date_timestamp;";
     $queryVariables = array();
 	$queryVariables[':VAT_client'] = $VAT_client;
-	$queryVariables[':currentDate'] = $currentDate;
 	$sql = $connection->prepare($query);
 	if(!$sql->execute($queryVariables)){
 		$info = $connection->errorInfo();
@@ -102,7 +101,11 @@
 	?>
 	<form action="../searchconsults.php" method="post">
 		<h1>New Appointments</h1>
-		<p>Date: <input type='date' name='date' required/></p>
+		<p>Only future dates are allowed</p>
+		<?php
+		// Limitação da data da consulta para o futuro à data atual
+		echo("<p>Date: <input type='date' name='date' min=" . date("Y-m-d") . " required/></p>");
+		?>
 		<p>Time: <input type='time' name='time' min="09:00" max="17:00" required/></p>
 		<input type="hidden" name="VAT_client" value="<?php echo $VAT_client;?>"/>
 		<input type="hidden" name="Client_Name" value="<?php echo $Client_Name;?>"/>

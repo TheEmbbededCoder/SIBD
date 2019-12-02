@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Information about Consultation</title>
+	<title>Search Available Doctors</title>
 	<script>
 		function goBack() {
 		window.history.back()
@@ -8,7 +8,7 @@
 	</script>
 </head>
 <body>
-	<h1>Search Doctors</h1>
+	<h1>Search Available Doctors</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";	
@@ -55,12 +55,7 @@
 	}
 	echo("</p>");
 	$datestr = '"' . $date . " " . substr($time, 0, 2) . '"';
-	$query = 	"SELECT VAT, name, specialization 
-				FROM doctor natural join employee 
-				WHERE VAT not in (
-					SELECT VAT_doctor 
-					FROM appointment 
-					WHERE date_timestamp = $datestr);";
+	$query = "SELECT VAT, name, specialization FROM doctor natural join employee WHERE VAT not in ( SELECT VAT_doctor FROM appointment WHERE date_timestamp = $datestr);";
 	$result = $connection->query($query);
 	if($result == FALSE) {
 		$info = $connection->errorInfo();
@@ -68,6 +63,7 @@
 		exit();
 	}
 	echo("<h3>Available Doctors:</h3>");
+	echo("<p>press \"Make appointment\" to select the desired doctor:</p>");
 	echo("<table border=\"1\">");
 	echo("<tr><td>Name</td><td>Specialization</td></tr>");
 	foreach($result as $row)

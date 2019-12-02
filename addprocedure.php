@@ -110,13 +110,16 @@ if (isset($_POST['add']))//to run PHP script on submit
 	$VAT_client = $_POST['VAT_client'];
 	$VAT_doctor = $_POST['VAT_doctor'];
 	$date_timestamp = $_POST['date_timestamp'];
-	echo("<h3>New Procedure Added</h3>");
+	echo("<h3>Adding Procedure</h3>");
 	
 	// Insert _procedure
 	$sql = "INSERT INTO procedure_in_consultation VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$description')";
 	$nrows = $connection->exec($sql);
 	if($nrows != 0) {
 		echo("<p>Sucessfully added procedure!</p>");
+	}
+	else {
+		echo("<p>ERROR: There's already this type of procedure in this consultation</p>");
 	}
 
 	echo("<button onclick=\"goBack2()\">Go Back</button>");

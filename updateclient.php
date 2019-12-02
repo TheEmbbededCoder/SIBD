@@ -14,7 +14,10 @@
 	<form action='../updatingclient.php' method='post'>
 		<p><input type="hidden" name="vat" value="<?=$_REQUEST['VAT_client']?>"/></p>
 		<p><input type="hidden" name="name"	value="<?=$_REQUEST['Client_Name']?>"/></p>
-		<p>Birth Date: <input type='date' name='birth_date' required/></p>
+		<?php
+		// Limitação da data de nascimento à data atual
+		echo("<p>Birth Date: <input type='date' name='birth_date' max=" . date("Y-m-d") . " required/></p>");
+		?>
 		<p>Street: <input type='text' name='street' required/></p>
 		<p>City: <input type='text' name='city' required/></p>
 		<p>ZIP: <input type='text' name='zip' required/></p>

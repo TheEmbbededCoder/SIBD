@@ -102,16 +102,11 @@
 		echo($row['VAT_client']);
 		echo("</td></tr>");
 	}
-		
 	echo("</table>");
 	echo("<p> </p>");
-			
-		
-		
-	
+
 	$connection = null;
 	?>
-
 <button onclick="goBack()">Go Back</button>
 <button><a href="../homepage.php">Homepage</button>
 </body>

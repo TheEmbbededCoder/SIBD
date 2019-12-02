@@ -14,7 +14,6 @@
 	// Try to connect to the database
 	try	{
 		$connection = new PDO("mysql:host=" . $host. ";dbname=" . $dbname, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
-
 	}
 	catch(PDOException $exception) {
 		echo("<p>Error: ");
@@ -84,15 +83,11 @@
 			$query = $query . "zip LIKE '%$client_address_zip%' ";
 		}
 
-		$query = $query . ";";
+		$query = $query . "ORDER BY VAT;";
 	}
 	else {
-		$query = "SELECT * FROM client natural join phone_number_client;";
+		$query = "SELECT * FROM client natural join phone_number_client ORDER BY name;";
 	}
-	
-	/* // DEBUG
-	echo("<p>$query</p>");
-	print_r($queryVariables);*/
 
 	$sql = $connection->prepare($query);
 	if(!$sql->execute($queryVariables)) {
@@ -164,7 +159,10 @@
 	<h4>Input the new client information</h4>
 	<p>VAT: <input type='text' name='vat' required /></p>
 	<p>Name: <input type='text' name='name' required/></p>
-	<p>Birth Date: <input type='date' name='birth_date' required/></p>
+	<?php
+	// Limitação da data de nascimento à data atual
+	echo("<p>Birth Date: <input type='date' name='birth_date' max=" . date("Y-m-d") . " required/></p>");
+	?>
 	<p>Street: <input type='text' name='street' required/></p>
 	<p>City: <input type='text' name='city' required/></p>
 	<p>ZIP: <input type='text' name='zip' required/></p>
@@ -177,7 +175,6 @@
 	<p><input type="submit" value="Submit"/></p>
 
 	<?php
-
 	$connection = null;
 ?>
 <button><a href="homepage.php">Homepage</button>

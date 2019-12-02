@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Consults and Appointments</title>
+	<title>View Consult</title>
 	<script>
 	function goBack() {
 		window.history.back()

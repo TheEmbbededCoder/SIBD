@@ -1,6 +1,9 @@
 <html>
+<head>
+	<title>Client Insertion</title>
+</head>
 <body>
-	<h1>Clients</h1>
+	<h1>Client Insertion</h1>
 	<?php
 	$host="db.ist.utl.pt";
 	$user="ist425355";	
@@ -21,7 +24,6 @@
 	}
 
 	$VAT = $_REQUEST['vat'];
-
 	$name = $_REQUEST['name'];
 
 	$birth_date = $_REQUEST['birth_date'];
@@ -53,40 +55,34 @@
 	}
 
 	$street = $_REQUEST['street'];
-
 	$city = $_REQUEST['city'];
-
 	$zip = $_REQUEST['zip'];
-
 	$gender = $_REQUEST['gender2'];
-	
 	$phone = $_REQUEST['phone'];
 
 
 	$query = "INSERT INTO client VALUES ('$VAT', '$name', '$birth_date', '$street', '$city', '$zip', '$gender', '$age')";
 	$query1 = "INSERT INTO phone_number_client VALUES ('$VAT', '$phone')";
 	
-	echo("<p>Will be inserted a new client.</p>");
+	echo("<p>New client being inserted.</p>");
 
 	$nrows = $connection->exec($query);
 	$nrows1 = $connection->exec($query1);
 
-	if($nrows ==1 && $nrows1 == 1){
+	if($nrows ==1 && $nrows1 == 1) {
 		echo "Success !";
 	}
-?>
+	else {
+		echo "Error ! - Client already exist with given VAT";
+	}
+	?>
 	<form action='clients.php' method='post'>
-	<p><input type="hidden" name="VAT_client"
-		value="<?=$_REQUEST['vat']?>"/></p>
-	<p><input type="hidden" name="client_name"
-			value="<?=$_REQUEST['name']?>"/></p>
-	<p><input type="submit" value="Continue"/></p>
-	
+		<p><input type="hidden" name="VAT_client" value="<?=$_REQUEST['vat']?>"/></p>
+		<p><input type="hidden" name="client_name" value="<?=$_REQUEST['name']?>"/></p>
+		<p><input type="submit" value="Continue"/></p>
+	</form>
 	<?php
-
 	$connection = null;
-?>
-
-
+	?>
 </body>
 </html>

@@ -49,30 +49,41 @@
 		$quadrant3 = 'Upper Left';
 		$quadrant4 = 'Upper Right';
 
-		$i=0;
-		for($k=1; $k<5; $k++){
-			for($j=1; $j<9; $j++){
+		try {
+			$connection->beginTransaction();
+			$i=0;
+			for($k=1; $k<5; $k++){
+				for($j=1; $j<9; $j++){
 
-				$number = $j;
-				$measure = $_REQUEST["measure$i"];
-				$description = $_REQUEST["desc$i"];
-				if($k==1){
-					$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant1', '$number', '$description', '$measure')";
+					$number = $j;
+					$measure = $_REQUEST["measure$i"];
+					$description = $_REQUEST["desc$i"];
+					if($k==1){
+						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant1', '$number', '$description', '$measure')";
+					}
+					elseif($k==2){
+						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant2', '$number', '$description', '$measure')";
+					}
+					elseif($k==3){
+						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant3', '$number', '$description', '$measure')";
+					}
+					elseif ($k==4){
+						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant4', '$number', '$description', '$measure')";
+					}
+					$i=$i+1;
+					$nrows = $connection->query($query);
 				}
-				elseif($k==2){
-					$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant2', '$number', '$description', '$measure')";
-				}
-				elseif($k==3){
-					$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant3', '$number', '$description', '$measure')";
-				}
-				elseif ($k==4){
-					$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant4', '$number', '$description', '$measure')";
-				}
-				$i=$i+1;
-				$nrows = $connection->exec($query);
 			}
-		}
 
+			$connection->commit();
+
+			echo("<h2>Sucess !</h2>");
+		}
+		catch (Exception $e) {
+		    // An exception has been thrown
+		    // We must rollback the transaction
+		    $connection->rollback();
+		}
 	}
 	// Show the received client
 	echo("<p><b>Client: </b>");
@@ -173,10 +184,10 @@
 			echo($row['number']);
 			echo("</td>");
 			echo("<td>");
-			echo("<INPUT TYPE='TEXT' NAME='desc$i' SIZE='20' REQUIRED>");
+			echo("<INPUT TYPE='TEXT' NAME='desc$i' SIZE='20' value='-'' REQUIRED>");
 			echo("</td>");
 			echo("<td>");
-			echo("<INPUT TYPE='number' NAME='measure$i' REQUIRED>");
+			echo("<INPUT TYPE='number' NAME='measure$i' value='0' REQUIRED>");
 			echo("</td></tr>");
 			$i=$i+1;
 		}
@@ -186,7 +197,13 @@
 		</form>
 
 		<?php
-			
+		if (!isset($_POST['submit'])) {
+			echo("<p> </p>");
+			echo("<button onclick=\"goBack()\">Go Back</button>");
+		}
+		else {
+			echo("<button onclick=\"goBack2()\">Go Back</button>");
+		}
 	} else{
 
 		echo("<table border=\"1\">");
@@ -203,12 +220,20 @@
 			echo("</td>");
 			echo("<td>");
 			echo($row['measure']);
-			echo("</td></tr>");
+			echo("</td></tr>"); 
 		}
 		echo("</table>");
-
+		echo("<br>");
+		
+		if (!isset($_POST['submit'])) {
+			echo("<p> </p>");
+			echo("<button onclick=\"goBack()\">Go Back</button>");
+		}
+		else {
+			echo("<button onclick=\"goBack2()\">Go Back</button>");
+		}
 	}
-	echo("<button onclick=\"goBack2()\">Go Back</button>");
+	echo("<p> </p>");
 	echo("<button><a href=\"../homepage.php\">Homepage</button>");
 	$connection = null;
 ?>
