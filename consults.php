@@ -43,9 +43,10 @@
 	date_default_timezone_set("Europe/London");
 	$currentDate = date("Y-m-d H:i:s");
 	echo("<p>The time is " . date("Y-m-d H:i:s") . "</p>");
-	$query = "SELECT * FROM appointment WHERE VAT_client = :VAT_client ORDER BY date_timestamp;";
+	$query = "SELECT a.date_timestamp, a.VAT_doctor, SOAP_S FROM appointment a LEFT OUTER JOIN consultation c ON a.VAT_doctor = c.VAT_doctor AND a.date_timestamp = c.date_timestamp WHERE a.VAT_client = :VAT_client ORDER BY a.date_timestamp;";
     $queryVariables = array();
 	$queryVariables[':VAT_client'] = $VAT_client;
+
 	$sql = $connection->prepare($query);
 	if(!$sql->execute($queryVariables)){
 		$info = $connection->errorInfo();
@@ -81,19 +82,38 @@
 			echo("&VAT_client=");
 			echo($VAT_client);
 			echo("\">");
-			echo("Appointment");
-			echo("</a></td>");
-			echo("<td><a href=\"../clientConsultation.php/?VAT_doctor=");
-			echo($row['VAT_doctor']);
-			echo("&date_timestamp=");
-			echo($row['date_timestamp']);
-			echo("&Client_Name=");
-			echo($Client_Name);
-			echo("&VAT_client=");
-			echo($VAT_client);
-			echo("\">");
-			echo("Consultation");
-			echo("</a></td>");
+			echo("View Appointment");
+			echo("</a>");
+			if(isset($row['SOAP_S'])) {
+				echo("<td>");
+				echo("</td>");
+				echo("</td>");
+				echo("<td><a href=\"../clientConsultation.php/?VAT_doctor=");
+				echo($row['VAT_doctor']);
+				echo("&date_timestamp=");
+				echo($row['date_timestamp']);
+				echo("&Client_Name=");
+				echo($Client_Name);
+				echo("&VAT_client=");
+				echo($VAT_client);
+				echo("\">");
+				echo("View Consultation");
+				echo("</a></td>");
+			}
+			else {
+				echo("<td><a href=\"../appToConsult.php/?VAT_doctor=");
+				echo($row['VAT_doctor']);
+				echo("&date_timestamp=");
+				echo($row['date_timestamp']);
+				echo("&Client_Name=");
+				echo($Client_Name);
+				echo("&VAT_client=");
+				echo($VAT_client);
+				echo("&Edit=0");
+				echo("\">");
+				echo("Add Consultation");
+				echo("</a></td>");
+			}
 			echo("</td></tr>");
 		}
 		echo("</table>");
