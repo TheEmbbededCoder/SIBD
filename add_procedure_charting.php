@@ -44,11 +44,6 @@
 
 		$date_timestamp = $_REQUEST['date_timestamp'];
 
-		$quadrant1 = 'Lower Left';
-		$quadrant2 = 'Lower Right';
-		$quadrant3 = 'Upper Left';
-		$quadrant4 = 'Upper Right';
-
 		try {
 			$connection->beginTransaction();
 			$i=0;
@@ -59,19 +54,25 @@
 					$measure = $_REQUEST["measure$i"];
 					$description = $_REQUEST["desc$i"];
 					if($k==1){
-						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant1', '$number', '$description', '$measure')";
+						$stmt = $connection->prepare("INSERT INTO procedure_charting (name, VAT, date_timestamp, quadrant, number, description, measure) VALUES (:name, :VAT_doctor, :date_timestamp, 'Lower Left', :number, :description, :measure)");
 					}
 					elseif($k==2){
-						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant2', '$number', '$description', '$measure')";
+						$stmt = $connection->prepare("INSERT INTO procedure_charting (name, VAT, date_timestamp, quadrant, number, description, measure) VALUES (:name, :VAT_doctor, :date_timestamp, 'Lower Right', :number, :description, :measure)");
 					}
 					elseif($k==3){
-						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant3', '$number', '$description', '$measure')";
+						$stmt = $connection->prepare("INSERT INTO procedure_charting (name, VAT, date_timestamp, quadrant, number, description, measure) VALUES (:name, :VAT_doctor, :date_timestamp, 'Upper Left', :number, :description, :measure)");
 					}
 					elseif ($k==4){
-						$query = "INSERT INTO procedure_charting VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$quadrant4', '$number', '$description', '$measure')";
+						$stmt = $connection->prepare("INSERT INTO procedure_charting (name, VAT, date_timestamp, quadrant, number, description, measure) VALUES (:name, :VAT_doctor, :date_timestamp, 'Upper Right', :number, :description, :measure)");
 					}
 					$i=$i+1;
-					$nrows = $connection->query($query);
+					$stmt->bindParam(':name', $name);
+					$stmt->bindParam(':VAT_doctor', $VAT_doctor);
+					$stmt->bindParam(':date_timestamp', $date_timestamp);
+					$stmt->bindParam(':number', $number);
+					$stmt->bindParam(':description', $description);
+					$stmt->bindParam(':measure', $measure);
+					$nrows = $stmt->execute();
 				}
 			}
 
@@ -175,7 +176,7 @@
 		<?php
 		$i = 0;
 		echo("<table border=\"1\">");
-		echo("<tr><td>Quadrant</td><td>Number</td><td>Description</td><td>Measure</td></tr>");
+		echo("<tr><td>Quadrant</td><td>Number</td><td>Description</td><td>Measure [mm]</td></tr>");
 		foreach ($result as $row) {
 			echo("<tr><td>");
 			echo($row['quadrant']);
@@ -207,7 +208,7 @@
 	} else{
 
 		echo("<table border=\"1\">");
-		echo("<tr><td>Quadrant</td><td>Number</td><td>Description</td><td>Measure</td></tr>");
+		echo("<tr><td>Quadrant</td><td>Number</td><td>Description</td><td>Measure [mm]</td></tr>");
 		foreach ($result as $row) {
 			echo("<tr><td>");
 			echo($row['quadrant']);

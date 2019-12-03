@@ -131,8 +131,15 @@ if (isset($_POST['submit']))//to run PHP script on submit
 	echo("<h3>New Prescription Added</h3>");
 	
 	// Insert prescription
-	$sql = "INSERT INTO prescription VALUES ('$name', '$lab', '$VAT_doctor', '$date_timestamp', '$id', '$dosage', '$description')";
-	$nrows = $connection->exec($sql);
+	$stmt = $connection->prepare("INSERT INTO prescription (name, lab, VAT_doctor, date_timestamp, ID, dosage, description) VALUES (:name, :lab, :VAT_doctor, :date_timestamp, :id, :dosage, :description)");
+	$stmt->bindParam(':name', $name);
+	$stmt->bindParam(':lab', $lab);
+	$stmt->bindParam(':VAT_doctor', $VAT_doctor);
+	$stmt->bindParam(':date_timestamp', $date_timestamp);
+	$stmt->bindParam(':id', $id);
+	$stmt->bindParam(':dosage', $dosage);
+	$stmt->bindParam(':description', $description);
+	$nrows = $stmt->execute();
 	if($nrows != 0) {
 		echo("<p>Sucessfully added prescription</p>");
 	}

@@ -60,21 +60,35 @@
 	$gender = $_REQUEST['gender2'];
 	$phone = $_REQUEST['phone'];
 
-
-	$query = "INSERT INTO client VALUES ('$VAT', '$name', '$birth_date', '$street', '$city', '$zip', '$gender', '$age')";
-	$query1 = "INSERT INTO phone_number_client VALUES ('$VAT', '$phone')";
-	
 	echo("<p>New client being inserted.</p>");
+	try {
+		$stmt = $connection->prepare("INSERT INTO client (VAT, name, birth_date, street, city, zip, gender, age) VALUES (:VAT, :name, :birth_date, :street, :city, :zip, :gender, :age)");
+		$stmt->bindParam(':VAT', $VAT);
+		$stmt->bindParam(':name', $name);
+		$stmt->bindParam(':birth_date', $birth_date);
+		$stmt->bindParam(':street', $street);
+		$stmt->bindParam(':city', $city);
+		$stmt->bindParam(':zip', $zip);
+		$stmt->bindParam(':gender', $gender);
+		$stmt->bindParam(':age', $age);
+		$nrows = $stmt->execute();
+		
+		$stmt = $connection->prepare("INSERT INTO phone_number_client (VAT, phone) VALUES (:VAT, :phone)");
+		$stmt->bindParam(':VAT', $VAT);
+		$stmt->bindParam(':phone', $phone);
+		$nrows1 = $stmt->execute();
 
-	$nrows = $connection->exec($query);
-	$nrows1 = $connection->exec($query1);
+		if($nrows == 0 || $nrows1 == 0) {
+			echo "Error ! - Client already exist with given VAT";
+		}
+		else {
+			echo "Success !";
+		}
+	}
+	catch(Exception $exception) {
+		echo 'Caught exception: ',  $exception->getMessage(), "\n";
+	}
 
-	if($nrows ==1 && $nrows1 == 1) {
-		echo "Success !";
-	}
-	else {
-		echo "Error ! - Client already exist with given VAT";
-	}
 	?>
 	<form action='clients.php' method='post'>
 		<p><input type="hidden" name="VAT_client" value="<?=$_REQUEST['vat']?>"/></p>

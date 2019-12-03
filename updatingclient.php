@@ -59,26 +59,18 @@
 		$gender = $_REQUEST['gender2'];
 		$phone = $_REQUEST['phone'];
 
-		$query = "UPDATE client SET birth_date = '$birth_date' WHERE VAT ='$VAT' AND name = '$name' ";
-		$query1 = "UPDATE client SET age = '$age' WHERE VAT ='$VAT' AND name = '$name' ";
-		$query2 = "UPDATE client SET street = '$street' WHERE VAT ='$VAT' AND name = '$name' ";
-		$query3 = "UPDATE client SET city = '$city' WHERE VAT ='$VAT' AND name = '$name' ";
-		$query4 = "UPDATE client SET zip = '$zip' WHERE VAT ='$VAT' AND name = '$name' ";
-		$query5 = "UPDATE client SET gender = '$gender' WHERE VAT ='$VAT' AND name = '$name' ";
 
-		$query6 = "UPDATE phone_number_client SET phone = '$phone' WHERE VAT ='$VAT' ";
+		$sql = "UPDATE client SET birth_date = ?, street = ?, city = ?, zip = ?, gender = ?, age = ? WHERE VAT = ? AND name = ?";
+		$stmt = $connection->prepare($sql);
+		$nrows = $stmt->execute([$birth_date, $street, $city, $zip, $gender, $age, $VAT, $name]);
+
+		$sql = "UPDATE phone_number_client SET phone = ? WHERE VAT = ? ";
+		$stmt = $connection->prepare($sql);
+		$nrows1 = $stmt->execute([$phone, $VAT]);
 
 		echo("<h3>The client will be updated.</h3>");
 
-		$nrows = $connection->exec($query);
-		$nrows1 = $connection->exec($query1);
-		$nrows2 = $connection->exec($query2);
-		$nrows3 = $connection->exec($query3);
-		$nrows4 = $connection->exec($query4);
-		$nrows5 = $connection->exec($query5);
-		$nrows6 = $connection->exec($query6);
-
-		if($nrows == 1 || $nrows1 == 1 || $nrows2 ==1 || $nrows3 == 1 || $nrows4 == 1 || $nrows5 == 1 || $nrows6 == 1 ) {
+		if($nrows == 1 || $nrows1 == 1 ) {
 			echo "Values updated !";
 		}
 		else {

@@ -37,16 +37,24 @@
 	echo "$datestr";
 
 	$VAT_client = $_REQUEST['vat_client'];
-
 	$description = $_REQUEST['description'];
-	// Dado que os dados de inserção tem de estar correctos, a consulta sera sempre bem criada
-	$query = "INSERT INTO appointment VALUES ('$VAT_doctor', '$datestr', '$description', '$VAT_client')";
-	
+
 	echo("<p>A new appointment will be inserted.</p>");
+	// Dado que os dados de inserção tem de estar correctos, a consulta sera sempre bem criada
+	$stmt = $connection->prepare("INSERT INTO appointment (VAT_doctor, date_timestamp, description, VAT_client) VALUES (:VAT, :date_timestamp, :description, :VAT_client)");
+	$stmt->bindParam(':VAT', $VAT_doctor);
+	$stmt->bindParam(':date_timestamp', $datestr);
+	$stmt->bindParam(':description', $description);
+	$stmt->bindParam(':VAT_client', $VAT_client);
+	$nrows = $stmt->execute();
 
-	$nrows = $connection->exec($query);
+	if($nrows == 1) {
+		echo("Success !");
+	}
+	else {
+		echo("Error on insertion !");
+	}
 
-	echo("Success !");
 	?>
 	<form action='clients.php' method='post'>
 	<p><input type="hidden" name="VAT_client" value="<?=$_REQUEST['vat_client']?>"/></p>

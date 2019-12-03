@@ -55,13 +55,18 @@
 	}
 	echo("</p>");
 	$datestr = '"' . $date . " " . substr($time, 0, 2) . '"';
-	$query = "SELECT VAT, name, specialization FROM doctor natural join employee WHERE VAT not in ( SELECT VAT_doctor FROM appointment WHERE date_timestamp = $datestr);";
-	$result = $connection->query($query);
-	if($result == FALSE) {
+	$sql = $connection->prepare("SELECT VAT, name, specialization FROM doctor natural join employee WHERE VAT not in ( SELECT VAT_doctor FROM appointment WHERE date_timestamp = :datestr )");
+	if(!$sql->execute([':datestr' => $datestr])){
 		$info = $connection->errorInfo();
 		echo("<p>Error: {$info[2]}</p>");
 		exit();
 	}
+	$result=$sql->fetchAll();
+	if($result == 0) {
+        $info = $sqls->errorInfo();
+        echo("<p>Error: {$info[2]}</p>");
+        exit();
+    }
 	echo("<h3>Available Doctors:</h3>");
 	echo("<p>press \"Make appointment\" to select the desired doctor:</p>");
 	echo("<table border=\"1\">");

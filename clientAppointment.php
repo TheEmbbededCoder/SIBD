@@ -63,7 +63,7 @@
 
 
 	//search appointment info
-	$query = 'SELECT * FROM appointment WHERE VAT_doctor = :VAT_doctor and date_timestamp=:date_timestamp;';
+	$query = 'SELECT * FROM appointment WHERE VAT_doctor = :VAT_doctor and date_timestamp= :date_timestamp;';
 	$queryVariables = array();
 	$queryVariables[':VAT_doctor'] = $VAT_doctor;
 	$queryVariables[':date_timestamp'] = $date_timestamp;

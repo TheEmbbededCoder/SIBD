@@ -113,8 +113,12 @@ if (isset($_POST['add']))//to run PHP script on submit
 	echo("<h3>Adding Procedure</h3>");
 	
 	// Insert _procedure
-	$sql = "INSERT INTO procedure_in_consultation VALUES ('$name', '$VAT_doctor', '$date_timestamp', '$description')";
-	$nrows = $connection->exec($sql);
+	$stmt = $connection->prepare("INSERT INTO procedure_in_consultation (name, VAT_doctor, date_timestamp, description) VALUES (:name, :VAT_doctor, :date_timestamp, :description)");
+	$stmt->bindParam(':name', $name);
+	$stmt->bindParam(':VAT_doctor', $VAT_doctor);
+	$stmt->bindParam(':date_timestamp', $date_timestamp);
+	$stmt->bindParam(':description', $description);
+	$nrows = $stmt->execute();
 	if($nrows != 0) {
 		echo("<p>Sucessfully added procedure!</p>");
 	}

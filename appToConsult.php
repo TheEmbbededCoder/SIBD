@@ -167,18 +167,20 @@ if (isset($_POST['submit']))//to run PHP script on submit
 		echo("<p>press Go Back to return.</p>");
 		
 		echo("<button onclick=\"goBack2()\">Go Back</button>");
-		echo("<button><a href=\"../homepage.php\">Homepage</button>");
+		echo("<button><a href=\"../homepage.php\">Homepage</a></button>");
 
 		// Insert consultation
-		$sql = "UPDATE consultation SET SOAP_S = '$s', SOAP_O = '$o', SOAP_A = '$a', SOAP_P = '$p' WHERE VAT_doctor ='$VAT_doctor' AND date_timestamp = '$date_timestamp'";
-		$nrows = $connection->exec($sql);
+		$sql = "UPDATE consultation SET SOAP_S = ?, SOAP_O = ?, SOAP_A = ?, SOAP_P = ? WHERE VAT_doctor = ? AND date_timestamp = ?";
+		$stmt = $connection->prepare($sql);
+		$nrows = $stmt->execute([$s, $o, $a, $p, $VAT_doctor, $date_timestamp]);
 		if($nrows != 0) {
 			echo("<p>Sucessfully changed consultation</p>");
 		}
 
 		// Insert consultation assistant
-		$sql = "UPDATE consultation_assistant SET VAT_nurse = '$VAT_nurse' WHERE VAT_doctor ='$VAT_doctor' AND date_timestamp = '$date_timestamp'";
-		$nrows = $connection->exec($sql);
+		$sql = "UPDATE consultation_assistant SET VAT_nurse = ? WHERE VAT_doctor = ? AND date_timestamp = ?";
+		$stmt = $connection->prepare($sql);
+		$nrows = $stmt->execute([$VAT_nurse, $VAT_doctor, $date_timestamp]);
 		if($nrows != 0) {
 			echo("<p>Sucessfully changed consultation assistant</p>");
 		}
@@ -205,15 +207,24 @@ if (isset($_POST['submit']))//to run PHP script on submit
 		echo("<button><a href=\"../homepage.php\">Homepage</button>");
 
 		// Insert consultation
-		$sql = "INSERT INTO consultation VALUES ('$VAT_doctor', '$date_timestamp', '$s', '$o', '$a', '$p')";
-		$nrows = $connection->exec($sql);
+		$stmt = $connection->prepare("INSERT INTO consultation (VAT_doctor, date_timestamp, SOAP_S, SOAP_O, SOAP_A, SOAP_P) VALUES (:VAT_doctor, :date_timestamp, :s, :o, :a, :p)");
+		$stmt->bindParam(':VAT_doctor', $VAT_doctor);
+		$stmt->bindParam(':date_timestamp', $date_timestamp);
+		$stmt->bindParam(':s', $s);
+		$stmt->bindParam(':o', $o);
+		$stmt->bindParam(':a', $a);
+		$stmt->bindParam(':p', $p);
+		$nrows = $stmt->execute();
 		if($nrows != 0) {
 			echo("<p>Sucessfully added consultation</p>");
 		}
 
 		// Insert consultation assistant
-		$sql = "INSERT INTO consultation_assistant VALUES ('$VAT_doctor', '$date_timestamp', '$VAT_nurse')";
-		$nrows = $connection->exec($sql);
+		$stmt = $connection->prepare("INSERT INTO consultation_assistant (VAT_doctor, date_timestamp, VAT_nurse) VALUES (:VAT_doctor, :date_timestamp, :VAT_nurse)");
+		$stmt->bindParam(':VAT_doctor', $VAT_doctor);
+		$stmt->bindParam(':date_timestamp', $date_timestamp);
+		$stmt->bindParam(':VAT_nurse', $VAT_nurse);
+		$nrows = $stmt->execute();
 		if($nrows != 0) {
 			echo("<p>Sucessfully added consultation assistant</p>");
 		}
@@ -223,8 +234,11 @@ if (isset($_POST['submit']))//to run PHP script on submit
 			// Loop to store and display values of individual checked checkbox.
 			foreach($_POST['diagnosis'] as $selected){
 				// Insert consultation assistant
-				$sql = "INSERT INTO consultation_diagnostic VALUES ('$VAT_doctor', '$date_timestamp', '$selected')";
-				$nrows = $connection->exec($sql);
+				$stmt = $connection->prepare("INSERT INTO consultation_diagnostic (VAT_doctor, date_timestamp, ID) VALUES (:VAT_doctor, :date_timestamp, :selected)");
+				$stmt->bindParam(':VAT_doctor', $VAT_doctor);
+				$stmt->bindParam(':date_timestamp', $date_timestamp);
+				$stmt->bindParam(':selected', $selected);
+				$nrows = $stmt->execute();
 				if($nrows != 0) {
 					echo($selected);
 					echo("</p>");
@@ -236,7 +250,7 @@ if (isset($_POST['submit']))//to run PHP script on submit
 }
 else {
 	echo("<button onclick=\"goBack()\">Go Back</button>");
-	echo("<button><a href=\"../homepage.php\">Homepage</button>");
+	echo("<button><a href=\"../homepage.php\">Homepage</a></button>");
 }
 
 	$connection = null;
